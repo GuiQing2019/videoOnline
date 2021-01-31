@@ -102,7 +102,7 @@
                                                         </c:if>
                                                         <td>
                                                             <button data-toggle="modal"
-                                                                    data-target="#exampleModal" data-whatever="@mdo">
+                                                                    data-target="#${userList.userId}exampleModal" data-whatever="@mdo">
                                                                 修改
                                                             </button>
 
@@ -110,7 +110,7 @@
                                                             </button>
 
                                                                 <%--弹框表格--%>
-                                                            <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                            <div class="modal fade" id="${userList.userId}exampleModal" tabindex="-1"
                                                                  role="dialog"
                                                                  aria-labelledby="exampleModalLabel">
                                                                 <div class="modal-dialog" role="document">
@@ -124,9 +124,7 @@
                                                                             <h4 class="modal-title"
                                                                                 id="exampleModalLabel">新增</h4>
                                                                         </div>
-                                                                        <form id="userUpdate"
-                                                                              action="/manager/userManager/userUpdate"
-                                                                              method="post">
+                                                                        <form id="userUpdate" action="/manager/userManager/userUpdate" method="post">
                                                                             <table style=" margin:50px auto;">
                                                                                 <tbody>
                                                                                 <tr>
@@ -286,12 +284,16 @@
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="/js/main.min.js"></script>
+<script type="text/javascript" src="/js/jquery.form.js"></script>
 <script type="text/javascript">
 
-
+/*
     $("#userUpdate").ajaxForm({
         beforeSubmit: function () {
+            alert("1");
         },
+        url:"/manager/userManager/userUpdate",
+        method:"post",
         data: $("#userUpdate").serialize(),
         dataType: "json",
         success: function (data) {
@@ -305,7 +307,7 @@
                 alert(data.msg)
             }
         }
-    });
+    });*/
 
 
     delUser = function (uid, obj) {

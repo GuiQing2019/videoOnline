@@ -3,6 +3,7 @@ package com.gqchen.controller;
 import com.gqchen.entity.Result;
 import com.gqchen.entity.TbClassify;
 import com.gqchen.entity.TbRole;
+import com.gqchen.entity.TbSysuser;
 import com.gqchen.service.TbClassifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,5 +72,18 @@ public class ManagerClassifyController {
         List<TbClassify> tbClassifies = classifyService.queryAll(tbClassify);
         model.addAttribute("classifyList", tbClassifies);
         return "manager/classIfy/classifyList";
+    }
+
+    @PostMapping("/classifyUpdate")
+    public String classifyUpdate(TbClassify classify,Model model){
+
+        int update = classifyService.update(classify);
+        if (update > 0) {
+            //查询所有
+            List<TbClassify> classifyList = classifyService.queryAll(new TbClassify());
+            model.addAttribute("classifyList",classifyList);
+            return "/manager/classIfy/classifyList";
+        }
+        return "修改失败";
     }
 }

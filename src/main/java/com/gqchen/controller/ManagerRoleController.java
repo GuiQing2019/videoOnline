@@ -77,5 +77,23 @@ public class ManagerRoleController {
         return "manager/user/roleList";
 
     }
+    @PostMapping("/roleUpdate")
+    public String userUpdate(TbRole role,Model model) {
+        Result<TbRole> result = null;
+        ArrayList<TbRole> list = new ArrayList<>();
+        list.add(role);
+        int update = roleService.update(role);
+        if (update > 0) {
+            //插入成功
+            result = new Result<>(0, "修改成功!", list);
+            //查询角色,传递角色列表
+            List<TbRole> tbRoles = roleService.queryAll(new TbRole());
+            model.addAttribute("roleList", tbRoles);
+            return "manager/user/roleList";
+        } else {
+            result = new Result<>(1, "修改失败!", list);
+        }
+        return "";
+    }
 
 }

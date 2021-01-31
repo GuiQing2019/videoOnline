@@ -60,9 +60,8 @@ public class TbRoleServiceImpl implements TbRoleService {
      * @return 实例对象
      */
     @Override
-    public TbRole update(TbRole tbRole) {
-        this.tbRoleDao.update(tbRole);
-        return this.queryById(tbRole.getRoleId());
+    public int update(TbRole tbRole) {
+        return this.tbRoleDao.update(tbRole);
     }
 
     /**

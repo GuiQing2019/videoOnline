@@ -51,9 +51,8 @@
         <aside class="lyear-layout-sidebar">
 
             <!-- logo -->
-            <div id="logo" class="sidebar-header">
-                <a href="../index/index.jsp"><img src="/img/logo-sidebar.png" title="logo" alt=""/></a>
-            </div>
+          <%--  <div id="logo" class="sidebar-header">
+            </div>--%>
             <div class="lyear-layout-sidebar-scroll">
                 <!--菜单-->
                 <nav class="sidebar-main">
@@ -102,7 +101,7 @@
                                 </div>
                             </a>
                             <ul class="nav nav-subnav my_nav2">
-                                <li><a href="/manager/videoManager/tutorNeedingList">审核管理</a></li>
+                                <li><a href="/manager/videoManager/videoApproverList">审核管理</a></li>
                                 <li><a href="/manager/videoManager/videoList">视频列表</a></li>
                             </ul>
                         </li>

@@ -73,9 +73,8 @@ public class TbClassifyServiceImpl implements TbClassifyService {
      * @return 实例对象
      */
     @Override
-    public TbClassify update(TbClassify tbClassify) {
-        this.tbClassifyDao.update(tbClassify);
-        return this.queryById(tbClassify.getClassifyId());
+    public int update(TbClassify tbClassify) {
+        return  this.tbClassifyDao.update(tbClassify);
     }
 
     /**

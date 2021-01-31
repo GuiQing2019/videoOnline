@@ -18,4 +18,8 @@ public class InitController {
     public String regitsterPage() {
         return "register";
     }
+    @RequestMapping("/test")
+    public String test(){
+        return "manager_drugs_lib";
+    }
 }

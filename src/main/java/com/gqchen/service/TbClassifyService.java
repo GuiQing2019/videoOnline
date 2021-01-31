@@ -43,7 +43,7 @@ public interface TbClassifyService {
      * @param tbClassify 实例对象
      * @return 实例对象
      */
-    TbClassify update(TbClassify tbClassify);
+    int update(TbClassify tbClassify);
 
     /**
      * 通过主键删除数据

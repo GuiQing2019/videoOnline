@@ -130,8 +130,7 @@ public class ManagerUserController {
     }
 
     @PostMapping("/userUpdate")
-    @ResponseBody
-    public Result<TbSysuser> userUpdate(TbSysuser sysuser) {
+    public String userUpdate(TbSysuser sysuser,Model model) {
         Result<TbSysuser> result = null;
         ArrayList<TbSysuser> list = new ArrayList<>();
         list.add(sysuser);
@@ -139,9 +138,13 @@ public class ManagerUserController {
         if (update > 0) {
             //插入成功
             result = new Result<>(0, "修改成功!", list);
+            //查询所有
+            List<TbSysuser> sysuserList = userService.queryAll(new TbSysuser());
+            model.addAttribute("userList", sysuserList);
+            return "manager/user/userList";
         } else {
             result = new Result<>(1, "修改失败!", list);
         }
-        return result;
+        return "";
     }
 }

@@ -69,7 +69,7 @@
                                         <c:choose>
                                             <c:when test="${empty classifyList}">
                                                 <tr>
-                                                    <td colspan="5">暂无数据</td>
+                                                    <td colspan="4">暂无数据</td>
                                                 </tr>
                                             </c:when>
                                             <c:otherwise>
@@ -81,13 +81,81 @@
                                                         <td>
                                                                 <%--编辑和删除--%>
                                                                 <%--/manager/userManager/findUser?id=${userList.userId} onclick="return update('${userList.userId}',this)"--%>
-                                                            <button data-toggle="modal" data-target="#myModal" id="btn1"
-                                                                    onclick="return update('${classifyList.classifyId}',this)">
+                                                            <button data-toggle="modal"
+                                                                    data-target="#${classifyList.classifyId}exampleModal"
+                                                                    data-whatever="@mdo">
                                                                 修改
                                                             </button>
                                                             &nbsp;&nbsp;
-                                                            <button onclick="delclassify('${classifyList.classifyId}',this)">删除
+                                                            <button onclick="delclassify('${classifyList.classifyId}',this)">
+                                                                删除
                                                             </button>
+                                                                <%--弹框表格--%>
+                                                            <div class="modal fade" id="${classifyList.classifyId}exampleModal"
+                                                                 tabindex="-1"
+                                                                 role="dialog"
+                                                                 aria-labelledby="exampleModalLabel">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close"><span
+                                                                                    aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                            <h4 class="modal-title"
+                                                                                id="exampleModalLabel">新增</h4>
+                                                                        </div>
+                                                                        <form id="userUpdate"
+                                                                              action="/manager/classifyManager/classifyUpdate"
+                                                                              method="post">
+                                                                            <table style=" margin:50px auto;">
+                                                                                <tbody>
+                                                                                <tr>
+                                                                                    <td>类型编号：</td>
+                                                                                    <td><input type="number"
+                                                                                               class="form-control"
+                                                                                               name="classifyId"
+                                                                                               value="${classifyList.classifyId}"
+                                                                                               readonly/></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>类型名称：</td>
+                                                                                    <td><input type="text"
+                                                                                               class="form-control"
+                                                                                               name="classifyName"
+                                                                                               value="${classifyList.classifyName}"
+                                                                                               required/></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>类型解释：</td>
+                                                                                    <td><input type="text"
+                                                                                               class="form-control"
+                                                                                               name="classifyDesc"
+                                                                                               value="${classifyList.classifyDesc}"
+                                                                                               required/></td>
+                                                                                </tr>
+                                                                                </tbody>
+
+                                                                                <tfoot>
+                                                                                <tr>
+                                                                                    <td><input type="submit"
+                                                                                               class="btn btn-default"
+                                                                                               value="确定"
+                                                                                               id="btnSure"/></td>
+                                                                                    <td><input type="button"
+                                                                                               class="btn btn-default"
+                                                                                               value="取消"
+                                                                                               id="btnCancel"
+                                                                                               data-dismiss="modal"/>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                </tfoot>
+                                                                            </table>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -103,29 +171,6 @@
 
                 </div>
 
-<%--
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel">变更信息</h4>
-                            </div>
-                            <div class="modal-body">
-                                <jsp:include page="../user/userEdit.jsp"></jsp:include>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="close()">
-                                    关闭
-                                </button>
-                                <button type="button" class="btn btn-primary">提交更改</button>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal -->
-                </div>
---%>
             </div>
 
         </main>

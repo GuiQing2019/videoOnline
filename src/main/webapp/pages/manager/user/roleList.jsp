@@ -78,13 +78,72 @@
                                                         <td>${roleList.roleName}</td>
                                                         <td>
                                                                 <%--编辑和删除--%>
-                                                            <button data-toggle="modal" data-target="#myModal" id="btn1"
-                                                                    onclick="return update('${roleList.roleId}',this)">
+                                                            <button data-toggle="modal"
+                                                                    data-target="#${roleList.roleId}exampleModal"
+                                                                    data-whatever="@mdo">
                                                                 修改
                                                             </button>
                                                             &nbsp;&nbsp;
                                                             <button onclick="delRole('${roleList.roleId}',this)">删除
                                                             </button>
+
+                                                            <div class="modal fade" id="${roleList.roleId}exampleModal"
+                                                                 tabindex="-1"
+                                                                 role="dialog"
+                                                                 aria-labelledby="exampleModalLabel">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close"><span
+                                                                                    aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                            <h4 class="modal-title"
+                                                                                id="exampleModalLabel">新增</h4>
+                                                                        </div>
+                                                                        <form id="roleUpdate"
+                                                                              action="/manager/roleManager/roleUpdate"
+                                                                              method="post">
+                                                                            <table style=" margin:50px auto;">
+                                                                                <tbody>
+                                                                                <tr>
+                                                                                    <td>角色编号：</td>
+                                                                                    <td><input type="number"
+                                                                                               class="form-control"
+                                                                                               name="roleId"
+                                                                                               value="${roleList.roleId}"
+                                                                                               readonly/></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>角色名称：</td>
+                                                                                    <td><input type="text"
+                                                                                               class="form-control"
+                                                                                               name="roleName"
+                                                                                               value="${roleList.roleName}"
+                                                                                               required/></td>
+                                                                                </tr>
+                                                                                </tbody>
+
+                                                                                <tfoot>
+                                                                                <tr>
+                                                                                    <td><input type="submit"
+                                                                                               class="btn btn-default"
+                                                                                               value="确定"
+                                                                                               id="btnSure"/></td>
+                                                                                    <td><input type="button"
+                                                                                               class="btn btn-default"
+                                                                                               value="取消"
+                                                                                               id="btnCancel"
+                                                                                               data-dismiss="modal"/>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                </tfoot>
+                                                                            </table>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -100,29 +159,6 @@
 
                 </div>
 
-<%--
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel">变更信息</h4>
-                            </div>
-                            <div class="modal-body">
-                                <jsp:include page="../user/userEdit.jsp"></jsp:include>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="close()">
-                                    关闭
-                                </button>
-                                <button type="button" class="btn btn-primary">提交更改</button>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal -->
-                </div>
---%>
             </div>
 
         </main>
@@ -138,23 +174,24 @@
 <script type="text/javascript">
 
 
-    update = function (uid, obj) {
-        $.ajax({
-            type: "post",
-            url: "/manager/userManager/findUser",
-            data: {
-                id: uid
-            },
-            async: false,
-            dataType: "json",
-            success: function (data) {
-                alert(data);
-                $('#btn1').modal('show');
+   /* $("#roleUpdate").ajaxForm({
+        beforeSubmit: function () {
+        },
+        data: $("#roleUpdate").serialize(),
+        dataType: "json",
+        success: function (data) {
+            console.log(data)
+            if (data.code == 0) {
+                //添加成功成功
+
+                alert(data.msg);
+                window.location.href = "/manager/roleManager/roleList";
+            } else {
+                //添加失败
+                alert(data.msg)
             }
-        });
-
-
-    };
+        }
+    });*/
 
     delRole = function (rid, obj) {
 
@@ -180,13 +217,6 @@
         });
     }
 
-    $(function () {
-        $('.search-bar .dropdown-menu a').click(function () {
-            var field = $(this).data('field') || '';
-            $('#search-field').val(field);
-            $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
-        });
-    });
 </script>
 </body>
 </html>

@@ -62,8 +62,8 @@
                                             <th>编号</th>
                                             <th>名称</th>
                                             <th>简介</th>
-                                            <th>地址</th>
                                             <th>类型</th>
+                                            <th>地址</th>
                                             <th>状态</th>
                                             <th>举报者</th>
                                             <th>操作</th>
@@ -77,20 +77,20 @@
                                                 </tr>
                                             </c:when>
                                             <c:otherwise>
-                                                <c:forEach var="videoList" items="${videoList}">
+                                                <c:forEach var="videoApproverList" items="${videoApproverList}">
                                                     <tr>
-                                                        <td>${videoList.videoId}</td>
-                                                        <td>${videoList.videoTitle}</td>
-                                                        <td>${videoList.videoInfo}</td>
-                                                        <td>${videoList.videoUrl}</td>
-                                                        <td>${videoList.videoStatuId}</td>
-                                                        <td>${videoList.videoClassify}</td>
-                                                        <td>${videoList.userName}</td>
+                                                        <td>${videoApproverList.videoApproverId}</td>
+                                                        <td>${videoApproverList.videoName}</td>
+                                                        <td>${videoApproverList.videoDesc}</td>
+                                                        <td>${videoApproverList.classifyId}</td>
+                                                        <td>${videoApproverList.videoUrl}</td>
+                                                        <td>${videoApproverList.statuId}</td>
+                                                        <td>${videoApproverList.userId}</td>
                                                         <td>
                                                                 <%--编辑和删除--%>
                                                                 <%--/manager/userManager/findUser?id=${userList.userId} onclick="return update('${userList.userId}',this)"--%>
                                                             <button data-toggle="modal" data-target="#myModal" id="btn1"
-                                                                    onclick="return update('${videoList.videoId}',this)">
+                                                                    onclick="return update('${videoApproverList.videoId}',this)">
                                                                 修改
                                                             </button>
                                                             &nbsp;&nbsp;

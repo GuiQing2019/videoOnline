@@ -42,6 +42,11 @@ public class TbVideoapproverServiceImpl implements TbVideoapproverService {
         return this.tbVideoapproverDao.queryAllByLimit(offset, limit);
     }
 
+    @Override
+    public List<TbVideoapprover> queryAll(TbVideoapprover tbVideoapprover) {
+        return this.tbVideoapproverDao.queryAll(tbVideoapprover);
+    }
+
     /**
      * 新增数据
      *

@@ -42,7 +42,7 @@ public interface TbRoleService {
      * @param tbRole 实例对象
      * @return 实例对象
      */
-    TbRole update(TbRole tbRole);
+    int update(TbRole tbRole);
 
     /**
      * 通过主键删除数据

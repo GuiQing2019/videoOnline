@@ -1,5 +1,6 @@
 package com.gqchen.service;
 
+import com.gqchen.entity.TbVideo;
 import com.gqchen.entity.TbVideoapprover;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public interface TbVideoapproverService {
      */
     List<TbVideoapprover> queryAllByLimit(int offset, int limit);
 
+    List<TbVideoapprover> queryAll(TbVideoapprover tbVideoapprover);
     /**
      * 新增数据
      *
