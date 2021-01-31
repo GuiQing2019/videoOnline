@@ -3,6 +3,8 @@ package com.gqchen.controller;
 import com.gqchen.entity.Result;
 import com.gqchen.entity.TbSysuser;
 import com.gqchen.service.TbSysuserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -16,6 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/sysuser")
 public class SysuerController {
+    private static final Logger LOG = LoggerFactory.getLogger(SysuerController.class);
     private static final Integer SUCCESS_CODE = 0;
     private static final Integer FAIL_CODE = 1;
     private static final String SUCCESS_MSG = "登录成功!";
@@ -27,14 +30,21 @@ public class SysuerController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public Result<TbSysuser> login(TbSysuser sysuser) {
-
+        LOG.info("------------------------------ 登录校验 ------------------------------");
         List<TbSysuser> list = new ArrayList<>();
         Result<TbSysuser> result = null;
         list = service.queryAll(sysuser);
-        if (list.size() > 0) {
+        //查询状态id如果为2的不允许登入
+        TbSysuser tbSysuser = list.get(0);
+        if (2 != tbSysuser.getStatuId() && !StringUtils.isEmpty(tbSysuser)) {
             result = new Result<>(SUCCESS_CODE, SUCCESS_MSG, list);
+            LOG.info("校验成功!!");
+        } else if (2 == tbSysuser.getStatuId()) {
+            result = new Result<>(FAIL_CODE, "该账号存在违规", list);
+            LOG.info("该账号存在违规!!");
         } else {
             result = new Result<>(FAIL_CODE, FAIL_MSG, list);
+            LOG.info("校验失败!!");
         }
         return result;
     }
@@ -42,7 +52,8 @@ public class SysuerController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public Result<Integer> register(TbSysuser tbSysuser) {
-        //开始注册,需要设置statu_id和role_id 默认1 age年龄
+        LOG.info("------------------------------ 开始注册 ------------------------------");
+        //开始注册,需要设置statu_id和role_id 默认1
         tbSysuser.setRoleId(1);
         tbSysuser.setStatuId(1);
         int resultIn = service.insert(tbSysuser);
@@ -50,9 +61,12 @@ public class SysuerController {
         ArrayList<Integer> list = new ArrayList<>();
         list.add(resultIn);
         if (resultIn > 0) {
-            result = new Result<>(SUCCESS_CODE, "插入成功!", list);
+            LOG.info("注册成功!");
+            result = new Result<>(SUCCESS_CODE, "注册成功!", list);
+            LOG.info("------------------------------ 进入主页 ------------------------------");
         } else {
-            result = new Result<>(SUCCESS_CODE, "插入失败!", list);
+            LOG.info("注册失败!");
+            result = new Result<>(SUCCESS_CODE, "注册失败!", list);
         }
         return result;
     }

@@ -6,6 +6,8 @@ import com.gqchen.entity.TbSysuser;
 import com.gqchen.service.TbClassifyService;
 import com.gqchen.service.TbRoleService;
 import com.gqchen.service.TbSysuserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,7 @@ import java.util.List;
 @RequestMapping("/manager")
 @Controller
 public class ManagerController {
+    private static final Logger LOG = LoggerFactory.getLogger(ManagerController.class);
 
     @Autowired
     private TbRoleService roleService;
@@ -39,25 +42,31 @@ public class ManagerController {
     }
 
     @RequestMapping("/userNew")
-    public String userNew(Model model){
+    public String userNew(Model model) {
+        LOG.info("------------------------------ 新增用户 ------------------------------");
         //跳转到用户新增页面
         List<TbSysuser> sysusers = sysuserService.queryAll(new TbSysuser());
-        model.addAttribute("userList",sysusers);
+        model.addAttribute("userList", sysusers);
+        LOG.info("传递model数据" + sysusers);
         return "/manager/user/userNew";
     }
 
     @RequestMapping("/roleNew")
-    public String roleNew(Model model){
+    public String roleNew(Model model) {
+        LOG.info("------------------------------ 新增角色 ------------------------------");
         //跳转到角色新增页面
         List<TbRole> tbRoles = roleService.queryAll(new TbRole());
-        model.addAttribute("roleList",tbRoles);
+        model.addAttribute("roleList", tbRoles);
+        LOG.info("传递model数据" + tbRoles);
         return "/manager/user/roleNew";
     }
 
     @RequestMapping("/classifyNew")
-    public String classifyNew(Model model){
+    public String classifyNew(Model model) {
+        LOG.info("------------------------------ 开始分类 ------------------------------");
         List<TbClassify> tbClassifies = classifyService.queryAll(new TbClassify());
-        model.addAttribute("classifyList",tbClassifies);
+        model.addAttribute("classifyList", tbClassifies);
+        LOG.info("传递model数据" + tbClassifies);
         return "/manager/classIfy/classifyNew";
     }
 }

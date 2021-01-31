@@ -3,6 +3,8 @@ package com.gqchen.controller;
 import com.gqchen.entity.Result;
 import com.gqchen.entity.TbSysuser;
 import com.gqchen.service.TbSysuserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,7 @@ import java.util.List;
 @RequestMapping("/manager/userManager")
 public class ManagerUserController {
 
+    private static final Logger LOG= LoggerFactory.getLogger(ManagerUserController.class);
     @Autowired
     private TbSysuserService userService;
 
@@ -40,10 +43,11 @@ public class ManagerUserController {
      */
     @RequestMapping("/userList")
     public String userList(Model model) {
-
+        LOG.info("------------------------------ 查询所有用户 ------------------------------");
         //查询所有用户
         List<TbSysuser> sysuserList = userService.queryAll(new TbSysuser());
         model.addAttribute("userList", sysuserList);
+        LOG.info("用户总数:"+sysuserList.size());
         return "manager/user/userList";
     }
 
@@ -57,6 +61,7 @@ public class ManagerUserController {
     @RequestMapping("/findUser")
     @ResponseBody
     public Result<TbSysuser> findUser(String id, Model model) throws ServletException, IOException {
+        LOG.info("------------------------------ 查询"+id+"的用户 ------------------------------");
         Result<TbSysuser> tbResult = null;
         ArrayList<TbSysuser> list = new ArrayList<>();
         //根据Id查询用户信息
@@ -64,8 +69,10 @@ public class ManagerUserController {
         list.add(tbSysuser);
         model.addAttribute("user", tbSysuser);
         if (tbSysuser != null) {
+            LOG.info("查询成功");
             tbResult = new Result<TbSysuser>(0, "查询成功", list);
         } else {
+            LOG.info("查询失败");
             tbResult = new Result<TbSysuser>(1, "查询失败", list);
         }
         return tbResult;
@@ -82,20 +89,23 @@ public class ManagerUserController {
     @RequestMapping("/delUser")
     @ResponseBody
     public Result<TbSysuser> delUser(String id) {
-
+        LOG.info("------------------------------ 删除用户 ------------------------------");
         boolean result = userService.deleteById(Integer.valueOf(id));
         Result<TbSysuser> tbResult = null;
         ArrayList<TbSysuser> list = new ArrayList<>();
         if (result) {
             tbResult = new Result<TbSysuser>(0, "删除成功!", list);
+            LOG.info("成功删除id为:"+id+"的用户");
         } else {
             tbResult = new Result<TbSysuser>(1, "删除失败!", list);
+            LOG.info("删除id为:"+id+"的用户失败");
         }
         return tbResult;
     }
 
     @RequestMapping("/query")
     public String queryByName(String userName, Model model) {
+        LOG.info("------------------------------ 根据用户名进行查询 ------------------------------");
         TbSysuser tbSysuser = new TbSysuser();
         tbSysuser.setUserName(userName);
         List<TbSysuser> list = userService.queryAll(tbSysuser);
@@ -107,6 +117,7 @@ public class ManagerUserController {
     @RequestMapping("/userInsert")
     @ResponseBody
     public Result<TbSysuser> userInsert(TbSysuser sysuser) {
+        LOG.info("------------------------------ 用户新增 ------------------------------");
         Result<TbSysuser> result = null;
         ArrayList<TbSysuser> list = new ArrayList<>();
         list.add(sysuser);
@@ -114,15 +125,17 @@ public class ManagerUserController {
         if (insert > 0) {
             //插入成功
             result = new Result<>(0, "新增成功!", list);
+            LOG.info("新增成功!");
         } else {
             result = new Result<>(1, "新增失败!", list);
+            LOG.info("新增失败!");
         }
         return result;
     }
 
     @RequestMapping("/showUser")
     public String showUser(Model model) {
-        //查询所有用户
+        LOG.info("------------------------------ 查询所有用户 ------------------------------");
         List<TbSysuser> sysuserList = userService.queryAll(new TbSysuser());
         model.addAttribute("userList", sysuserList);
         return "manager/user/userNew";
@@ -131,6 +144,7 @@ public class ManagerUserController {
 
     @PostMapping("/userUpdate")
     public String userUpdate(TbSysuser sysuser,Model model) {
+        LOG.info("------------------------------ 修改用户 ------------------------------");
         Result<TbSysuser> result = null;
         ArrayList<TbSysuser> list = new ArrayList<>();
         list.add(sysuser);

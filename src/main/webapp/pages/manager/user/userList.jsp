@@ -102,7 +102,8 @@
                                                         </c:if>
                                                         <td>
                                                             <button data-toggle="modal"
-                                                                    data-target="#${userList.userId}exampleModal" data-whatever="@mdo">
+                                                                    data-target="#${userList.userId}exampleModal"
+                                                                    data-whatever="@mdo">
                                                                 修改
                                                             </button>
 
@@ -110,7 +111,8 @@
                                                             </button>
 
                                                                 <%--弹框表格--%>
-                                                            <div class="modal fade" id="${userList.userId}exampleModal" tabindex="-1"
+                                                            <div class="modal fade" id="${userList.userId}exampleModal"
+                                                                 tabindex="-1"
                                                                  role="dialog"
                                                                  aria-labelledby="exampleModalLabel">
                                                                 <div class="modal-dialog" role="document">
@@ -124,7 +126,9 @@
                                                                             <h4 class="modal-title"
                                                                                 id="exampleModalLabel">新增</h4>
                                                                         </div>
-                                                                        <form id="userUpdate" action="/manager/userManager/userUpdate" method="post">
+                                                                        <form id="userUpdate"
+                                                                              action="/manager/userManager/userUpdate"
+                                                                              method="post">
                                                                             <table style=" margin:50px auto;">
                                                                                 <tbody>
                                                                                 <tr>
@@ -199,9 +203,8 @@
                                                                                     <td>用户性别：</td>
                                                                                     <td><select name="userGender"
                                                                                                 class="form-control">
-                                                                                        <option value="">请选择</option>
-                                                                                        <option value="女">女</option>
-                                                                                        <option value="男">男</option>
+                                                                                        <option value="${userList.userGender}"
+                                                                                                readonly>${userList.userGender}</option>
                                                                                     </select>
                                                                                     </td>
                                                                                 </tr>
@@ -210,12 +213,18 @@
                                                                                     <td>
                                                                                         <select name="roleId"
                                                                                                 class="form-control">
-                                                                                            <option value="0">请选择
-                                                                                            </option>
-                                                                                            <option value="1">管理员
-                                                                                            </option>
-                                                                                            <option value="2">用户
-                                                                                            </option>
+                                                                                            <c:if test="${userList.roleId=='2'}">
+                                                                                                <option value="2">用户
+                                                                                                </option>
+                                                                                                <option value="1">管理员
+                                                                                                </option>
+                                                                                            </c:if>
+                                                                                            <c:if test="${userList.roleId=='1'}">
+                                                                                                <option value="1">管理员
+                                                                                                </option>
+                                                                                                <option value="2">用户
+                                                                                                </option>
+                                                                                            </c:if>
                                                                                         </select>
                                                                                     </td>
                                                                                 </tr>
@@ -224,12 +233,18 @@
                                                                                     <td>
                                                                                         <select name="statuId"
                                                                                                 class="form-control">
-                                                                                            <option value="0">请选择
-                                                                                            </option>
-                                                                                            <option value="1">正常
-                                                                                            </option>
-                                                                                            <option value="2">异常
-                                                                                            </option>
+                                                                                            <c:if test="${userList.statuId=='1'}">
+                                                                                                <option value="1">正常
+                                                                                                </option>
+                                                                                                <option value="2">封号
+                                                                                                </option>
+                                                                                            </c:if>
+                                                                                            <c:if test="${userList.statuId=='2'}">
+                                                                                                <option value="2">封号
+                                                                                                </option>
+                                                                                                <option value="1">正常
+                                                                                                </option>
+                                                                                            </c:if>
                                                                                         </select>
                                                                                     </td>
                                                                                 </tr>
@@ -287,27 +302,27 @@
 <script type="text/javascript" src="/js/jquery.form.js"></script>
 <script type="text/javascript">
 
-/*
-    $("#userUpdate").ajaxForm({
-        beforeSubmit: function () {
-            alert("1");
-        },
-        url:"/manager/userManager/userUpdate",
-        method:"post",
-        data: $("#userUpdate").serialize(),
-        dataType: "json",
-        success: function (data) {
-            console.log(data)
-            if (data.code == 0) {
-                //添加成功成功
-                alert(data.msg);
-                window.location.href = "/manager/userManager/userList";
-            } else {
-                //添加失败
-                alert(data.msg)
+    /*
+        $("#userUpdate").ajaxForm({
+            beforeSubmit: function () {
+                alert("1");
+            },
+            url:"/manager/userManager/userUpdate",
+            method:"post",
+            data: $("#userUpdate").serialize(),
+            dataType: "json",
+            success: function (data) {
+                console.log(data)
+                if (data.code == 0) {
+                    //添加成功成功
+                    alert(data.msg);
+                    window.location.href = "/manager/userManager/userList";
+                } else {
+                    //添加失败
+                    alert(data.msg)
+                }
             }
-        }
-    });*/
+        });*/
 
 
     delUser = function (uid, obj) {
