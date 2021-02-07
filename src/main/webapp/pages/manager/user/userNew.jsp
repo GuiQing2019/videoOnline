@@ -24,6 +24,13 @@
     .table > thead:first-child > tr:first-child > th {
         text-align: center;
     }
+    .modal-content{
+        height: 640px;
+    }
+
+    .user-info-table tr{
+        height: 50px;
+    }
 </style>
 <body>
 <div class="lyear-layout-web">
@@ -58,7 +65,7 @@
                                                 </div>
                                                 <form id="userInsert" action="/manager/userManager/userInsert"
                                                       method="post">
-                                                    <table style=" margin:50px auto;">
+                                                    <table class="user-info-table" style=" margin:50px auto;">
                                                         <tbody>
                                                         <tr>
                                                             <td>用户昵称：</td>

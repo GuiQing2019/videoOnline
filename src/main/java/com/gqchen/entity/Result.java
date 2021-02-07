@@ -8,6 +8,7 @@ import java.util.List;
  * @author: GuiQingChen
  * @create: 2021-01-25 14:07
  **/
+
 public class Result<T> {
 
 

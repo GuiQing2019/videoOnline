@@ -192,8 +192,8 @@
 
     $("#loginId").ajaxForm({
         beforeSubmit: function () {
-            var name=$("#usernameId").val();
-            var pwd=$("#passwordId").val();
+            var name = $("#usernameId").val();
+            var pwd = $("#passwordId").val();
 
             //定义标记
             var uFlag = true;
@@ -219,19 +219,31 @@
                 pFlag = false;
             }
             return uFlag && pFlag;
-        },data: $('#loginId').serialize()
-        ,dataType: "json" //预期服务器返回的数据类型
-        ,success: function (data) {
+        }, data: $('#loginId').serialize()
+        , dataType: "json" //预期服务器返回的数据类型
+        , success: function (data) {
             //请求成功的方法
-            console.log(data);
+            console.log(data.data[0].statuId);
             if (data.code == 0) {
-                lightyear.loading('show');
-                // 假设ajax提交操作
-                setTimeout(function () {
-                    lightyear.loading('hide');
-                    lightyear.notify('管理员登录成功，欢迎来到后台管理...', 'success', 100);
-                }, 1000)
-                setTimeout(window.location.href = "/manager/index", 3000)
+                if (data.data[0].roleId == 1) {
+                    lightyear.loading('show');
+                    // 走管理员后台
+                    setTimeout(function () {
+                        lightyear.loading('hide');
+                        lightyear.notify('管理员登录成功，欢迎来到后台管理...', 'success', 2000);
+                    }, 1000)
+
+                    setTimeout(window.location.href = "/manager/index", 3000)
+                } else {
+                    lightyear.loading('show');
+                    // 走用户后台
+                    setTimeout(function () {
+                        lightyear.loading('hide');
+                        lightyear.notify('欢迎回来' + data.data[0].userName, +'!', 'success', 2000);
+                    }, 1000)
+
+                    setTimeout(window.location.href = "/page/index", 3000)
+                }
             }
             if (data.code == 1) {
                 lightyear.loading('show');

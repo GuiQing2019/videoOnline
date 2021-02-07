@@ -12,11 +12,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="order by dede58.com"/>
-    <title>学优家教网 - Everything is for child</title>
+    <title>视频网站</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="/css/style.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Quicksand:400,700|Quattrocento+Sans:400,700|Palanquin:400,600|Raleway|Josefin+Sans'
+          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/font-awesome.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/css/owl.theme.css">
 </head>
 <style>
 </style>
@@ -37,9 +42,9 @@
                         <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                     </ol>
                     <div class="carousel-inner" id="slideshow" style="height: 600px">
-                        <div class="item active" align="center"><img src="/file-service/1.jpg" alt=""></div>
-                        <div class="item" align="center"><img src="/file-service/2.jpg" alt=""></div>
-                        <div class="item" align="center"><img src="/file-service/3.jpg" alt=""></div>
+                        <div class="item active" align="center"><img src="/images/backgroud1.jpg" alt=""></div>
+                        <div class="item" align="center"><img src="/images/backgroud2.png" alt=""></div>
+                        <div class="item" align="center"><img src="/images/backgroud3.jpg" alt=""></div>
                     </div>
                     <a class="left carousel-control" href="#carouselExampleIndicators" role="button"
                        data-slide="prev"><span class="icon-left-open-big icon-prev" aria-hidden="true"></span><span
@@ -54,74 +59,123 @@
 </div>
 
 
-<!-------------------------------------------------新闻中心------------------------------------>
+<!-------------------------------------------------视频分类------------------------------------>
 <div class="clear"></div>
 <div class="sub_banner center">
-    <h3 style="text-align: center"><b>新闻中心</b></h3>
+    <h3 style="text-align: center"><b>视频分类</b></h3>
+    <jsp:include page="index_nav2.jsp"/>
+
     <div class="col-md-12">
         <div class="card">
-            <div class="card-body"style="width: 1200px;height: 300px">
+            <div class="card-body" style="width: 1200px;height: 300px">
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" style="text-align: center">
+                        <thead>
+                                        <tr>
+                                            <th>视频链接</th>
+                                        </tr>
+                                        <tr>
+                                            <th>视频</th>
+                                        </tr>
+                                        <tr>
+                                            <th>视频名称</th>
+                                        </tr>
+                                        <tr>
+                                            <th>播放</th>
+                                        </tr>
+                        </thead>
                         <tbody>
                         <c:choose>
-                            <c:when test="${empty newsList}">
+                            <c:when test="${empty videoList}">
                                 <tr>
-                                    <td colspan="4">暂无新闻</td>
+                                    <td colspan="5">暂无数据</td>
                                 </tr>
                             </c:when>
-                            <c:otherwise>
-                                <c:forEach var="newsList" items="${newsList}">
+                            <%--<c:otherwise>
+                                <c:forEach var="roleList" items="${roleList}">
                                     <tr>
+                                        <td>${roleList.roleId}</td>
+                                        <td>${roleList.roleName}</td>
                                         <td>
-                                            <a class="newsList" href="/index/news/info/${newsList.id}">
-                                                <small>${newsList.date}</small>
-                                                <h4><i><p> * ${newsList.title}</p></i></h4>
-                                            </a>
+                                                &lt;%&ndash;编辑和删除&ndash;%&gt;
+                                            <button data-toggle="modal"
+                                                    data-target="#${roleList.roleId}exampleModal"
+                                                    data-whatever="@mdo">
+                                                修改
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button onclick="delRole('${roleList.roleId}',this)">删除
+                                            </button>
+
+                                            <div class="modal fade" id="${roleList.roleId}exampleModal"
+                                                 tabindex="-1"
+                                                 role="dialog"
+                                                 aria-labelledby="exampleModalLabel">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close"
+                                                                    data-dismiss="modal"
+                                                                    aria-label="Close"><span
+                                                                    aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            <h4 class="modal-title"
+                                                                id="exampleModalLabel">新增</h4>
+                                                        </div>
+                                                        <form id="roleUpdate"
+                                                              action="/manager/roleManager/roleUpdate"
+                                                              method="post">
+                                                            <table style=" margin:50px auto;">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td>角色编号：</td>
+                                                                    <td><input type="number"
+                                                                               class="form-control"
+                                                                               name="roleId"
+                                                                               value="${roleList.roleId}"
+                                                                               readonly/></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>角色名称：</td>
+                                                                    <td><input type="text"
+                                                                               class="form-control"
+                                                                               name="roleName"
+                                                                               value="${roleList.roleName}"
+                                                                               required/></td>
+                                                                </tr>
+                                                                </tbody>
+
+                                                                <tfoot>
+                                                                <tr>
+                                                                    <td><input type="submit"
+                                                                               class="btn btn-default"
+                                                                               value="确定"
+                                                                               id="btnSure"/></td>
+                                                                    <td><input type="button"
+                                                                               class="btn btn-default"
+                                                                               value="取消"
+                                                                               id="btnCancel"
+                                                                               data-dismiss="modal"/>
+                                                                    </td>
+                                                                </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 </c:forEach>
-                            </c:otherwise>
+                            </c:otherwise>--%>
                         </c:choose>
                         </tbody>
                     </table>
-                    <div class="card-toolbar clearfix">
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-----------------------------------------网课中心-------------------------------------------->
-<div class="clear"></div>
-<div class="sub_banner center">
-    <h3 style="text-align: center"><b>网络课程</b></h3>
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body"style="width: 500px;height: 300px">
-                <c:choose>
-                    <c:when test="${empty mediaList}">
-                        <tr>
-                            <td colspan="4">暂无资源</td>
-                        </tr>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach var="mediaList" items="${mediaList}">
-                            <tr>
-                                <td>
-                                    <a class="newsList" href="/index/netCourse/info/${mediaList.id}">
-                                        <small>作者： ${mediaList.author}</small>
-                                        <h4><i><p> * ${mediaList.mediaName}</p><small>简介：${mediaList.mediaDesc}</small></i></h4>
-                                    </a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!------------------------------------------尾部------------------------------------------------>

@@ -18,35 +18,17 @@
     <link href="/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="/css/style.min.css" rel="stylesheet">
 </head>
-
 <body>
-<!-- start header -->
-<header style="height: 61px">
-    <div class="top center">
-        <div class="right fr">
-            <div class="gouwuche fr"><a href=""></a></div>
-            <div class="fr">
-                <ul id="user">
-                    <li><a href="/index/userSet" id="name_session" style="font-size: 22px">欢迎您! ${sessionScope.tbSysuser.userName}! </a></li>
-
-                     <li><a href="/index/logout"  style="font-size: 22px">退出登录</a></li>
-                </ul>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-    </div>
-</header>
-<!--end header -->
 
 <!-- start banner_x -->
 <div class="banner_x center">
     <div class="nav fl">
         <ul>
-            <li><a href="/page/index">首页</a></li>
-            <li><a href="/index/findTutor">视频中心</a></li>
-            <li><a href="/index/beTutor">我的视频</a></li>
-            <li><a href="/page/userInfo?id=${sessionScope.tbSysuser.userId}">个人中心</a></li>
+            <li><a href="/video/">影视</a></li>
+            <li><a href="/video/findTutor">新闻</a></li>
+            <li><a href="/video/beTutor">美食</a></li>
+            <li><a href="/video/userSet">音乐</a></li>
+            <li><a href="/video/userSet">生活</a></li>
         </ul>
     </div>
 </div>
@@ -64,7 +46,16 @@
 <script type="text/javascript">
     //页面加载完成：判断申请表内的申请状态如果不是“待审核”这使操作a标签所在的div改为已处理
     window.onload = function () {
-
+        var user_session = $("#name_session").text();
+        if (user_session == "") {
+            $("#user").empty();
+            $("#user").append("                    <li><a href=\"./login\">登录</a></li>\n" +
+                "                    <li>|</li>\n" +
+                "                    <li><a href=\"./register\">注册</a></li>\n" +
+                "                    <li>|</li>")
+        } else {
+            $("#logout").append("<li><a href=\"/sysuser/logout\">退出登录</a></li>");
+        }
     }
 
 

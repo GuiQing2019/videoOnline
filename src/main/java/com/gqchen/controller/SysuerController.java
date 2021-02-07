@@ -1,7 +1,9 @@
 package com.gqchen.controller;
 
 import com.gqchen.entity.Result;
+import com.gqchen.entity.TbClassify;
 import com.gqchen.entity.TbSysuser;
+import com.gqchen.service.TbClassifyService;
 import com.gqchen.service.TbSysuserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +31,20 @@ public class SysuerController {
     @Autowired
     private TbSysuserService service;
 
+    @Autowired
+    private TbClassifyService classify;
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public Result<TbSysuser> login(TbSysuser sysuser) {
+    public Result<TbSysuser> login(TbSysuser sysuser, HttpSession session) {
         LOG.info("------------------------------ 登录校验 ------------------------------");
         List<TbSysuser> list = new ArrayList<>();
         Result<TbSysuser> result = null;
         list = service.queryAll(sysuser);
+
+        //初始化视频列表
+
+
         //查询状态id如果为2的不允许登入
         TbSysuser tbSysuser = list.get(0);
         if (2 != tbSysuser.getStatuId() && !StringUtils.isEmpty(tbSysuser)) {
@@ -46,6 +57,11 @@ public class SysuerController {
             result = new Result<>(FAIL_CODE, FAIL_MSG, list);
             LOG.info("校验失败!!");
         }
+        //用户信息
+        session.setAttribute("tbSysuser",tbSysuser);
+        //传递视频
+        //session.setAttribute("tbVideo",null);
+        LOG.info(tbSysuser.toString());
         return result;
     }
 
