@@ -34,7 +34,7 @@
 
 <div class="container" style="padding: 0; background-color: white;">
 
-    <div class="container-fluid main-content" style="padding: 0;">
+    <div class="container-fluid main-content" style="margin-bottom: -18px;">
         <div class="header">
             <a href="#" style="float: left;">
                 <h1>个人中心</h1>
@@ -74,9 +74,6 @@
                             <li data-toggle="tab" class="dropdown-header">密码中心</li>
                             <li data-toggle="tab">
                                 <a id="passwordUpdateButton" href="#">修改密码</a>
-                            </li>
-                            <li data-toggle="tab">
-                                <a id="forgetPasswordButton" href="#">找回密码</a>
                             </li>
                         </ul>
                     </li>
@@ -349,7 +346,6 @@
     </form>
 
 
-
 </div>
 
 </div>
@@ -482,19 +478,9 @@
                 success: function (result) {
                     if (result.code == 0) {
                         console.log("1");
-                        lightyear.loading('show');
-                        // 走用户后台
-                        setTimeout(function () {
-                            lightyear.loading('hide');
-                            lightyear.notify('新密码已通过邮件发送,请注意查收!', 'success', 2000);
-                        }, 1000)
+                        window.wxc.xcConfirm("密码已发送到邮箱", window.wxc.xcConfirm.typeEnum.success);
                     } else {
-                        lightyear.loading('show');
-                        // 走用户后台
-                        setTimeout(function () {
-                            lightyear.loading('hide');
-                            lightyear.notify('修改失败!请检查用户密码!', 'danger', 2000);
-                        }, 1000)
+                        window.wxc.xcConfirm("密码发送失败", window.wxc.xcConfirm.typeEnum.error);
                     }
                 }//success:function
             });//ajax
