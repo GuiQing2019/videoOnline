@@ -50,7 +50,7 @@
                 <button type="button" data-toggle="collapse" data-target="#defaultmenu" class="navbar-toggle">
                     <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
                 </button>
-                <a href="#" class="navbar-brand" style="padding: 7px 22px"><i class="fa fa-home"></i></a>
+                <a href="/page/index" class="navbar-brand" style="padding: 7px 22px"><i class="fa fa-home"></i></a>
 
             </div>
             <!-- end navbar-header -->
@@ -479,6 +479,7 @@
                     if (result.code == 0) {
                         console.log("1");
                         window.wxc.xcConfirm("密码已发送到邮箱", window.wxc.xcConfirm.typeEnum.success);
+                        window.location.href = "/page/userInfo?id=${sessionScope.tbSysuser.userId}";
                     } else {
                         window.wxc.xcConfirm("密码发送失败", window.wxc.xcConfirm.typeEnum.error);
                     }

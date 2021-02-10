@@ -1,7 +1,9 @@
 package com.gqchen.controller;
 
 import com.gqchen.entity.TbSysuser;
+import com.gqchen.entity.TbVideo;
 import com.gqchen.service.TbSysuserService;
+import com.gqchen.service.TbVideoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class PageController {
     @Autowired
     private TbSysuserService sysuserService;
 
+    @Autowired
+    private TbVideoService videoService;
+
     @RequestMapping("/index")
     public String page(){
         LOG.info("------------------------------ 用户界面 ------------------------------");
@@ -36,8 +41,25 @@ public class PageController {
     @RequestMapping("/userInfo")
     public String userInfo(String id, Model session){
         LOG.info("------------------------------ 进入到个人中心 ------------------------------");
-
+        if (!id.equals("")) {
+            LOG.info("id不为空,根据id返回数据");
+            TbSysuser tbSysuser = sysuserService.queryById(Integer.valueOf(id));
+            session.addAttribute("tbSysuser",tbSysuser);
+        }
         return "/index/user/userinformation";
+    }
+
+    @RequestMapping("/myVideo")
+    public String myVideo(String id, Model session){
+        LOG.info("------------------------------ 我的视频 ------------------------------");
+        //查询该用户的所有视频
+        TbVideo tbVideo = new TbVideo();
+        tbVideo.setUserId(Integer.valueOf(id));
+        //查询出userId的所有视频
+        List<TbVideo> tbVideos = videoService.queryAll(tbVideo);
+        session.addAttribute("tbVideos",tbVideos);
+
+        return "/index/user/myVideo";
     }
 
 
