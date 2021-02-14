@@ -17,7 +17,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          video_id, video_title, video_info, video_url, video_statu_id, videotype_id, user_id, video_classify
+          video_id, video_title, video_info, video_url, video_statu_id, video_Approver_id, user_id, video_classify
         from videoweb.tb_video
         where video_id = #{videoId}
     </select>
@@ -25,7 +25,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          video_id, video_title, video_info, video_url, video_statu_id, videotype_id, user_id, video_classify
+          video_id, video_title, video_info, video_url, video_statu_id, video_Approver_id, user_id, video_classify
         from videoweb.tb_video
         limit #{offset}, #{limit}
     </select>
@@ -33,7 +33,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          video_id, video_title, video_info, video_url, video_statu_id, videotype_id, user_id, video_classify
+          video_id, video_title, video_info, video_url, video_statu_id, video_Approver_id, user_id, video_classify
         from videoweb.tb_video
         <where>
             <if test="videoId != null">
@@ -65,7 +65,7 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="videoId" useGeneratedKeys="true">
-        insert into videoweb.tb_video(video_title, video_info, video_url, video_statu_id, videotype_id, user_id, video_classify)
+        insert into videoweb.tb_video(video_title, video_info, video_url, video_statu_id, video_Approver_id, user_id, video_classify)
         values (#{videoTitle}, #{videoInfo}, #{videoUrl}, #{videoStatuId}, #{videotypeId}, #{userId}, #{videoClassify})
     </insert>
 
