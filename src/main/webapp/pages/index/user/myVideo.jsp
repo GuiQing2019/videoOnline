@@ -303,7 +303,7 @@
 
                             if (ret.resCode == '1') {
                                 alert("上传成功")
-                                window.location.href = "/page/myVideo";
+                                window.location.href = "/page/myVideo?id=${sessionScope.tbSysuser.userId}";
                             } else if (ret.resCode == '0') {
                                 alert("上传失败")
                             }

@@ -44,7 +44,7 @@
     <div class="nav fl">
         <ul>
             <li><a href="/page/index">首页</a></li>
-            <li><a href="/index/findTutor">视频中心</a></li>
+            <li><a href="/page/videoCentre?id=${sessionScope.tbSysuser.userId}">视频中心</a></li>
             <li><a href="/page/myVideo?id=${sessionScope.tbSysuser.userId}">我的视频</a></li>
             <li><a href="/page/userInfo?id=${sessionScope.tbSysuser.userId}">个人中心</a></li>
         </ul>

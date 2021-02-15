@@ -1,6 +1,7 @@
 package com.gqchen.controller;
 
 import com.gqchen.entity.TbSysuser;
+import com.gqchen.entity.TbUserAndVideo;
 import com.gqchen.entity.TbVideo;
 import com.gqchen.entity.TbVideoapprover;
 import com.gqchen.service.TbSysuserService;
@@ -77,6 +78,17 @@ public class PageController {
 
         return "/index/user/myVideo";
     }
+
+    @RequestMapping("/videoCentre")
+    public String videoCentre(String id, Model model) {
+        LOG.info("------------------------------ 视频中心 ------------------------------");
+        //搜索所有影视片出来
+        List<TbUserAndVideo> tbUserAndVideos = videoService.queryAllVideoAndUserName(new TbVideo());
+        model.addAttribute("tbUserAndVideos",tbUserAndVideos);
+
+        return "/index/user/videoCentre";
+    }
+
 
     /**
      * 上传视频

@@ -1,5 +1,6 @@
 package com.gqchen.service.impl;
 
+import com.gqchen.entity.TbUserAndVideo;
 import com.gqchen.entity.TbVideo;
 import com.gqchen.dao.TbVideoDao;
 import com.gqchen.service.TbVideoService;
@@ -87,5 +88,17 @@ public class TbVideoServiceImpl implements TbVideoService {
     @Override
     public boolean deleteById(Integer videoId) {
         return this.tbVideoDao.deleteById(videoId) > 0;
+    }
+
+    /**
+     * @Description: 根据用户id去查询用户表的用户名称
+     * @Param: [uId]
+     * @return: java.util.List<com.gqchen.entity.TbUserAndVideo>
+     * @Author: GuiQingChen
+     * @Date: 2021/2/15
+     */
+    @Override
+    public List<TbUserAndVideo> queryAllVideoAndUserName(TbVideo video) {
+        return this.tbVideoDao.queryAllVideoAndUserName(video);
     }
 }

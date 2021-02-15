@@ -1,5 +1,6 @@
 package com.gqchen.service;
 
+import com.gqchen.entity.TbUserAndVideo;
 import com.gqchen.entity.TbVideo;
 import java.util.List;
 
@@ -60,4 +61,12 @@ public interface TbVideoService {
      */
     boolean deleteById(Integer videoId);
 
+    /**
+     * @Description: 根据用户id去查询用户表的用户名称
+     * @Param: [uId]
+     * @return: java.util.List<com.gqchen.entity.TbUserAndVideo>
+     * @Author: GuiQingChen
+     * @Date: 2021/2/15
+     */
+    List<TbUserAndVideo> queryAllVideoAndUserName(TbVideo video);
 }

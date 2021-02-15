@@ -1,5 +1,10 @@
 import com.gqchen.entity.TbSysuser;
+import com.gqchen.entity.TbUserAndVideo;
+import com.gqchen.entity.TbVideo;
+import com.gqchen.service.TbVideoService;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * @program: Online
@@ -9,9 +14,18 @@ import org.springframework.util.StringUtils;
  **/
 public class Test {
 
+    private TbVideoService service;
     @org.junit.jupiter.api.Test
     public void test01() {
 
-        System.out.println(StringUtils.isEmpty(new TbSysuser()));
+        List<TbVideo> tbVideos = service.queryAll(new TbVideo());
+        for (TbVideo tbVideo : tbVideos) {
+            System.out.println(tbVideo.toString());
+        }
+       /* List<TbUserAndVideo> tbUserAndVideos = service.queryAllVideoAndUserName();
+        for (TbUserAndVideo tbUserAndVideo : tbUserAndVideos) {
+            System.out.println(tbUserAndVideo.toString());
+        }*/
+
     }
 }

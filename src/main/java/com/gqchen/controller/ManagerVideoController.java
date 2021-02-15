@@ -1,6 +1,7 @@
 package com.gqchen.controller;
 
 import com.gqchen.entity.Result;
+import com.gqchen.entity.TbUserAndVideo;
 import com.gqchen.entity.TbVideo;
 import com.gqchen.entity.TbVideoapprover;
 import com.gqchen.service.TbVideoService;
@@ -38,8 +39,8 @@ public class ManagerVideoController {
     @RequestMapping("/videoList")
     public String videoList(Model model) {
 
-        List<TbVideo> tbVideos = videoService.queryAll(new TbVideo());
-        model.addAttribute("videoList", tbVideos);
+        List<TbUserAndVideo> tbUserAndVideos = videoService.queryAllVideoAndUserName(new TbVideo());
+        model.addAttribute("videoList", tbUserAndVideos);
         return "manager/video/videoList";
     }
 
@@ -101,4 +102,15 @@ public class ManagerVideoController {
         return tbVideoResult;
 
     }
+    @RequestMapping("/queryVideoByClassify")
+    public String queryVideoByClassify(String id,Model model){
+        LOG.info(id);
+        TbVideo tbVideo = new TbVideo();
+        tbVideo.setVideoClassify(Integer.valueOf(id));
+        List<TbUserAndVideo> tbUserAndVideos = videoService.queryAllVideoAndUserName(tbVideo);
+        model.addAttribute("tbUserAndVideos",tbUserAndVideos);
+        return "/index/user/videoCentre";
+    }
+
+
 }

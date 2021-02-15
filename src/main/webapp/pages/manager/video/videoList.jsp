@@ -62,11 +62,9 @@
                                             <th>编号</th>
                                             <th>名称</th>
                                             <th>简介</th>
-                                            <th>地址</th>
                                             <th>状态</th>
                                             <th>类型</th>
                                             <th>上传者</th>
-                                            <th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -82,9 +80,38 @@
                                                         <td>${videoList.videoId}</td>
                                                         <td>${videoList.videoTitle}</td>
                                                         <td>${videoList.videoInfo}</td>
-                                                        <td>${videoList.videoUrl}</td>
-                                                        <td>${videoList.videoStatuId}</td>
-                                                        <td>${videoList.videoClassify}</td>
+                                                        <td>
+                                                            <c:if test="${videoList.videoStatuId=='3'}">
+                                                                上架中
+                                                            </c:if>
+                                                            <c:if test="${videoList.videoStatuId=='4'}">
+                                                                已下架
+                                                            </c:if>
+                                                            <c:if test="${videoList.videoStatuId=='5'}">
+                                                                审核中
+                                                            </c:if>
+                                                            <c:if test="${videoList.videoStatuId=='6'}">
+                                                                已审核
+                                                            </c:if>
+                                                        </td>
+                                                        </td>
+                                                        <td>
+                                                            <c:if test="${videoList.videoClassify =='1'}">
+                                                                电影
+                                                            </c:if>
+                                                            <c:if test="${videoList.videoClassify =='2'}">
+                                                                新闻
+                                                            </c:if>
+                                                            <c:if test="${videoList.videoClassify =='3'}">
+                                                                美食
+                                                            </c:if>
+                                                            <c:if test="${videoList.videoClassify =='4'}">
+                                                                音乐
+                                                            </c:if>
+                                                            <c:if test="${videoList.videoClassify =='5'}">
+                                                                生活
+                                                            </c:if>
+                                                        </td>
                                                         <td>${videoList.userName}</td>
                                                         <td>
                                                                 <%--编辑和删除--%>
@@ -94,7 +121,8 @@
                                                                 修改
                                                             </button>
                                                             &nbsp;&nbsp;
-                                                            <button onclick="delclassify('${videoList.videoId}',this)">删除
+                                                            <button onclick="delclassify('${videoList.videoId}',this)">
+                                                                删除
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -111,29 +139,29 @@
 
                 </div>
 
-<%--
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel">变更信息</h4>
-                            </div>
-                            <div class="modal-body">
-                                <jsp:include page="../user/userEdit.jsp"></jsp:include>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="close()">
-                                    关闭
-                                </button>
-                                <button type="button" class="btn btn-primary">提交更改</button>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal -->
-                </div>
---%>
+                <%--
+                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel">变更信息</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <jsp:include page="../user/userEdit.jsp"></jsp:include>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="close()">
+                                                    关闭
+                                                </button>
+                                                <button type="button" class="btn btn-primary">提交更改</button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal -->
+                                </div>
+                --%>
             </div>
 
         </main>

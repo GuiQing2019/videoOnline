@@ -14,6 +14,19 @@
         <result property="videoClassify" column="video_classify" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap id="BaseResultMap2" type="com.gqchen.entity.TbUserAndVideo">
+        <!--@Table TbUserAndVideo-->
+        <result property="videoId" column="video_id" jdbcType="INTEGER"/>
+        <result property="videoTitle" column="video_title" jdbcType="VARCHAR"/>
+        <result property="videoInfo" column="video_info" jdbcType="VARCHAR"/>
+        <result property="videoUrl" column="video_url" jdbcType="VARCHAR"/>
+        <result property="videoStatuId" column="video_statu_id" jdbcType="INTEGER"/>
+        <result property="videotypeId" column="videotype_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="videoClassify" column="video_classify" jdbcType="INTEGER"/>
+        <result property="userName" column="user_Name" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
@@ -102,5 +115,38 @@
     <delete id="deleteById">
         delete from videoweb.tb_video where video_id = #{videoId}
     </delete>
+
+    <select id="queryAllVideoAndUserName" resultMap="BaseResultMap2">
+        select
+        a.video_id, a.video_title, a.video_info, a.video_url, a.video_statu_id, a.video_Approver_id, a.user_id, a.video_classify, b.user_name
+        from tb_video a left join tb_sysuser b
+        on a.user_id=b.user_id
+        <where>
+            <if test="videoId != null">
+                and video_id = #{videoId}
+            </if>
+            <if test="videoTitle != null and videoTitle != ''">
+                and video_title = #{videoTitle}
+            </if>
+            <if test="videoInfo != null and videoInfo != ''">
+                and video_info = #{videoInfo}
+            </if>
+            <if test="videoUrl != null and videoUrl != ''">
+                and video_url = #{videoUrl}
+            </if>
+            <if test="videoStatuId != null">
+                and video_statu_id = #{videoStatuId}
+            </if>
+            <if test="videotypeId != null">
+                and video_Approver_id = #{videotypeId}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="videoClassify != null">
+                and video_classify = #{videoClassify}
+            </if>
+        </where>
+    </select>
 
 </mapper>
