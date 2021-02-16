@@ -116,6 +116,11 @@
         delete from videoweb.tb_video where video_id = #{videoId}
     </delete>
 
+    <!--通过审核id删除-->
+    <delete id="deleteByApId">
+        delete from videoweb.tb_video where video_Approver_id = #{video_Approver_id}
+    </delete>
+
     <select id="queryAllVideoAndUserName" resultMap="BaseResultMap2">
         select
         a.video_id, a.video_title, a.video_info, a.video_url, a.video_statu_id, a.video_Approver_id, a.user_id, a.video_classify, b.user_name
@@ -124,27 +129,6 @@
         <where>
             <if test="videoId != null">
                 and video_id = #{videoId}
-            </if>
-            <if test="videoTitle != null and videoTitle != ''">
-                and video_title = #{videoTitle}
-            </if>
-            <if test="videoInfo != null and videoInfo != ''">
-                and video_info = #{videoInfo}
-            </if>
-            <if test="videoUrl != null and videoUrl != ''">
-                and video_url = #{videoUrl}
-            </if>
-            <if test="videoStatuId != null">
-                and video_statu_id = #{videoStatuId}
-            </if>
-            <if test="videotypeId != null">
-                and video_Approver_id = #{videotypeId}
-            </if>
-            <if test="userId != null">
-                and user_id = #{userId}
-            </if>
-            <if test="videoClassify != null">
-                and video_classify = #{videoClassify}
             </if>
         </where>
     </select>

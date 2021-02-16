@@ -65,36 +65,57 @@
                                             <th>类型</th>
                                             <th>地址</th>
                                             <th>状态</th>
-                                            <th>举报者</th>
                                             <th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:choose>
-                                            <c:when test="${empty videoList}">
+                                            <c:when test="${empty videoApproverList}">
                                                 <tr>
-                                                    <td colspan="8">暂无数据</td>
+                                                    <td colspan="7">暂无数据</td>
                                                 </tr>
                                             </c:when>
                                             <c:otherwise>
                                                 <c:forEach var="videoApproverList" items="${videoApproverList}">
                                                     <tr>
-                                                        <td>${videoApproverList.videoApproverId}</td>
+                                                        <td>${videoApproverList.videoapproverId}</td>
                                                         <td>${videoApproverList.videoName}</td>
                                                         <td>${videoApproverList.videoDesc}</td>
-                                                        <td>${videoApproverList.classifyId}</td>
-                                                        <td>${videoApproverList.videoUrl}</td>
-                                                        <td>${videoApproverList.statuId}</td>
-                                                        <td>${videoApproverList.userId}</td>
                                                         <td>
-                                                                <%--编辑和删除--%>
-                                                                <%--/manager/userManager/findUser?id=${userList.userId} onclick="return update('${userList.userId}',this)"--%>
-                                                            <button data-toggle="modal" data-target="#myModal" id="btn1"
-                                                                    onclick="return update('${videoApproverList.videoId}',this)">
-                                                                修改
-                                                            </button>
-                                                            &nbsp;&nbsp;
-                                                            <button onclick="delclassify('${videoList.videoId}',this)">删除
+                                                            <c:if test="${videoApproverList.classifyId =='1'}">
+                                                                电影
+                                                            </c:if>
+                                                            <c:if test="${videoApproverList.classifyId =='2'}">
+                                                                新闻
+                                                            </c:if>
+                                                            <c:if test="${videoApproverList.classifyId =='3'}">
+                                                                美食
+                                                            </c:if>
+                                                            <c:if test="${videoApproverList.classifyId =='4'}">
+                                                                音乐
+                                                            </c:if>
+                                                            <c:if test="${videoApproverList.classifyId =='5'}">
+                                                                生活
+                                                            </c:if>
+                                                        </td>
+                                                        <td>${videoApproverList.videoUrl}</td>
+                                                        <td>
+                                                            <c:if test="${videoApproverList.statuId=='3'}">
+                                                                上架中
+                                                            </c:if>
+                                                            <c:if test="${videoApproverList.statuId=='4'}">
+                                                                已下架
+                                                            </c:if>
+                                                            <c:if test="${videoApproverList.statuId=='5'}">
+                                                                审核中
+                                                            </c:if>
+                                                            <c:if test="${videoApproverList.statuId=='6'}">
+                                                                已审核
+                                                            </c:if>
+                                                        </td>
+                                                        <td>
+
+                                                            <button onclick="delvideo('${videoApproverList.videoapproverId}',this)">删除
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -111,29 +132,6 @@
 
                 </div>
 
-<%--
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel">变更信息</h4>
-                            </div>
-                            <div class="modal-body">
-                                <jsp:include page="../user/userEdit.jsp"></jsp:include>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="close()">
-                                    关闭
-                                </button>
-                                <button type="button" class="btn btn-primary">提交更改</button>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal -->
-                </div>
---%>
             </div>
 
         </main>
@@ -149,12 +147,12 @@
 <script type="text/javascript">
 
 
-    delclassify = function (uid, obj) {
+    delvideo = function (vid, obj) {
         $.ajax({
             type: "post",
-            url: "/manager/classifyManager/delClassify",
+            url: "/manager/videoManager/delVideo",
             data: {
-                id: uid
+                id: vid
             },
             async: false,
             dataType: "json",
@@ -174,29 +172,6 @@
 
     };
 
-    delUser = function (uid, obj) {
-
-        //通过ajax进行删除
-        $.ajax({
-            type: "post",
-            url: "/manager/userManager/delUser",
-            data: {
-                id: uid
-            },
-            async: false,
-            dataType: "json",
-            success: function (data) {
-                if (data.code == 0) {
-                    alert(data.msg);
-                    $(obj).parent().parent().remove();
-                }
-
-                if (data.code == 1) {
-                    alert(data.msg)
-                }
-            }
-        });
-    }
 
     $(function () {
         $('.search-bar .dropdown-menu a').click(function () {

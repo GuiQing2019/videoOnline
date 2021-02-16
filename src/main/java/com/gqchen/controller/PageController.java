@@ -84,7 +84,8 @@ public class PageController {
         LOG.info("------------------------------ 视频中心 ------------------------------");
         //搜索所有影视片出来
         List<TbUserAndVideo> tbUserAndVideos = videoService.queryAllVideoAndUserName(new TbVideo());
-        model.addAttribute("tbUserAndVideos",tbUserAndVideos);
+        //url,typeId均未显示
+        model.addAttribute("tbUserAndVideos", tbUserAndVideos);
 
         return "/index/user/videoCentre";
     }
@@ -135,7 +136,7 @@ public class PageController {
                 String filename = "/file-service/media/" + fileName;
                 map.put("webShowPath", filename);
                 map.put("resCode", "0");
-                LOG.error(e.getMessage(),e);
+                LOG.error(e.getMessage(), e);
                 LOG.info("上传失败");
             }
 
@@ -149,17 +150,17 @@ public class PageController {
                 approver.setVideoName(video.getVideoTitle());
                 approver.setVideoDesc(video.getVideoInfo());
                 approver.setClassifyId(video.getVideoClassify());
-                approver.setVideoUrl("/file-service/media/"+fileName);
+                approver.setVideoUrl("/file-service/media/" + fileName);
                 videoapprover = videoapproverService.insert(approver);
 
             } catch (Exception e) {
                 LOG.error("审核表插入失败,请检查入参是否有误");
-                LOG.error(e.getMessage(),e);
+                LOG.error(e.getMessage(), e);
                 String filename = "/file-service/media/" + fileName;
                 map.put("webShowPath", filename);
                 map.put("resCode", "0");
                 throw e;
-            }finally {
+            } finally {
                 LOG.info("------------------------------ 审核提交完成! ------------------------------");
             }
 
@@ -168,20 +169,34 @@ public class PageController {
                 LOG.info("------------------------------ 存储video表! ------------------------------");
                 video.setVideoStatuId(videoapprover.getStatuId());
                 video.setVideotypeId(videoapprover.getVideoapproverId());
-                video.setVideoUrl(video.getVideoUrl());
+                video.setVideoUrl(videoapprover.getVideoUrl());
                 videoService.insert(video);
             } catch (Exception e) {
                 LOG.error("video表存储失败,检查入参是否有误");
-                LOG.error(e.getMessage(),e);
+                LOG.error(e.getMessage(), e);
                 String filename = "/file-service/media/" + fileName;
                 map.put("webShowPath", filename);
                 map.put("resCode", "0");
                 throw e;
-            }finally {
+            } finally {
                 LOG.info("------------------------------ 存储提交完成 ------------------------------");
             }
         }
         return map;
+    }
+
+
+    @RequestMapping("/videoPlay")
+    public String videoPlay(String id, Model model) {
+        LOG.info("----------------------------- 视频播放 ------------------------------");
+        //接收影片id,根据影片videoId,查询出上传者,名称,描述,视频类型,视频状态
+        TbVideo tbVideo = videoService.queryById(Integer.valueOf(id));
+        List<TbUserAndVideo> tbUserAndVideos = videoService.queryAllVideoAndUserName(tbVideo);
+        //获取出唯一
+        TbUserAndVideo tbUserAndVideo = tbUserAndVideos.get(0);
+        model.addAttribute("tbUserAndVideo",tbUserAndVideo);
+
+        return "/index/user/videoplay";
     }
 
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,65 +52,43 @@ public class ManagerVideoController {
         return "manager/video/videoApprover";
     }
 
-    /**
-     * @Description: 接收的id是video_Id
-     * 1.根据id查询审批表id,在进行删除审批表对应的数据
-     * 2.在删除video表对应数据
-     * @Param: [id]
-     * @return: java.lang.String
-     * @Author: GuiQingChen
-     * @Date: 2021/2/13
-     */
-    @PostMapping("/delVideo")
-    @ResponseBody
-    public Result<TbVideo> delVideo(@RequestParam("id") String id) {
-        LOG.info("------------------------------ 删除影片逻辑 ------------------------------");
-        TbVideo tbVideo = new TbVideo();
-        tbVideo.setVideoId(Integer.valueOf(id));
-        //先删除审批表对应的数据
-        List<TbVideo> tbVideos = videoService.queryAll(tbVideo);
-        Result<TbVideo> tbVideoResult = new Result<>();
-        tbVideoResult.setDATA(tbVideos);
-        if (tbVideos.size() > 0) {
-            try {
-                LOG.info("删除审核表数据");
-                TbVideo video = tbVideos.get(0);
-                Integer videotypeId = video.getVideotypeId();
-                videoapproverService.deleteById(videotypeId);
-            } catch (Exception e) {
-                LOG.error(e.getMessage(), e);
-                LOG.error("审核表删除失败,请检查数据是否存在问题");
-            } finally {
-                LOG.info("删除成功!");
-            }
-
-            //删除video表
-            try {
-                //在删除
-                LOG.info("删除video表");
-                videoService.deleteById(Integer.valueOf(id));
-                tbVideoResult.setCODE(0);
-                tbVideoResult.setMSG("删除成功");
-            } catch (NumberFormatException e) {
-                tbVideoResult.setCODE(1);
-                tbVideoResult.setMSG("删除失败");
-                LOG.error(e.getMessage(), e);
-                LOG.error("video表删除失败");
-            }
-        }
-
-        //跳转到我的视频
-        return tbVideoResult;
-
-    }
     @RequestMapping("/queryVideoByClassify")
-    public String queryVideoByClassify(String id,Model model){
+    public String queryVideoByClassify(String id, Model model) {
         LOG.info(id);
         TbVideo tbVideo = new TbVideo();
         tbVideo.setVideoClassify(Integer.valueOf(id));
         List<TbUserAndVideo> tbUserAndVideos = videoService.queryAllVideoAndUserName(tbVideo);
-        model.addAttribute("tbUserAndVideos",tbUserAndVideos);
+        model.addAttribute("tbUserAndVideos", tbUserAndVideos);
         return "/index/user/videoCentre";
+    }
+
+    /**
+     * @Description: 根据videoAp审核id删除
+     * @Param: [id]
+     * @return: java.lang.String
+     * @Author: GuiQingChen
+     * @Date: 2021/2/16
+     */
+    @PostMapping("/delVideo")
+    @ResponseBody
+    public Result<TbVideo> delvideo(String id) {
+        LOG.info("删除video");
+        Result<TbVideo> tbVideoResult = null;
+        try {
+            //先删除video表
+            videoService.deleteByApId(Integer.valueOf(id));
+
+            //再删除审核表
+            videoapproverService.deleteById(Integer.valueOf(id));
+            tbVideoResult = new Result<>(0, "删除成功!", new ArrayList<>());
+
+        } catch (NumberFormatException e) {
+            tbVideoResult = new Result<>(1, "删除失败!", new ArrayList<>());
+            LOG.error(e.getMessage(), e);
+            throw e;
+        }
+
+        return tbVideoResult;
     }
 
 

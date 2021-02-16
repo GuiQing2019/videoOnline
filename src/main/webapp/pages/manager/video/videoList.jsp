@@ -65,13 +65,14 @@
                                             <th>状态</th>
                                             <th>类型</th>
                                             <th>上传者</th>
+                                            <th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:choose>
                                             <c:when test="${empty videoList}">
                                                 <tr>
-                                                    <td colspan="8">暂无数据</td>
+                                                    <td colspan="6">暂无数据</td>
                                                 </tr>
                                             </c:when>
                                             <c:otherwise>
@@ -94,7 +95,6 @@
                                                                 已审核
                                                             </c:if>
                                                         </td>
-                                                        </td>
                                                         <td>
                                                             <c:if test="${videoList.videoClassify =='1'}">
                                                                 电影
@@ -113,18 +113,7 @@
                                                             </c:if>
                                                         </td>
                                                         <td>${videoList.userName}</td>
-                                                        <td>
-                                                                <%--编辑和删除--%>
-                                                                <%--/manager/userManager/findUser?id=${userList.userId} onclick="return update('${userList.userId}',this)"--%>
-                                                            <button data-toggle="modal" data-target="#myModal" id="btn1"
-                                                                    onclick="return update('${videoList.videoId}',this)">
-                                                                修改
-                                                            </button>
-                                                            &nbsp;&nbsp;
-                                                            <button onclick="delclassify('${videoList.videoId}',this)">
-                                                                删除
-                                                            </button>
-                                                        </td>
+                                                        <td><a href="#">播放</a></td>
                                                     </tr>
                                                 </c:forEach>
                                             </c:otherwise>
@@ -202,29 +191,6 @@
 
     };
 
-    delUser = function (uid, obj) {
-
-        //通过ajax进行删除
-        $.ajax({
-            type: "post",
-            url: "/manager/userManager/delUser",
-            data: {
-                id: uid
-            },
-            async: false,
-            dataType: "json",
-            success: function (data) {
-                if (data.code == 0) {
-                    alert(data.msg);
-                    $(obj).parent().parent().remove();
-                }
-
-                if (data.code == 1) {
-                    alert(data.msg)
-                }
-            }
-        });
-    }
 
     $(function () {
         $('.search-bar .dropdown-menu a').click(function () {

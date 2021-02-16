@@ -69,4 +69,7 @@ public interface TbVideoService {
      * @Date: 2021/2/15
      */
     List<TbUserAndVideo> queryAllVideoAndUserName(TbVideo video);
+
+
+    int deleteByApId(Integer videoApId);
 }

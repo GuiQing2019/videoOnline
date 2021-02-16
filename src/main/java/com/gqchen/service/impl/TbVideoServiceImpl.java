@@ -101,4 +101,9 @@ public class TbVideoServiceImpl implements TbVideoService {
     public List<TbUserAndVideo> queryAllVideoAndUserName(TbVideo video) {
         return this.tbVideoDao.queryAllVideoAndUserName(video);
     }
+
+    @Override
+    public int deleteByApId(Integer videoApId) {
+        return this.tbVideoDao.deleteByApId(videoApId);
+    }
 }

@@ -68,7 +68,9 @@
                                     </div>
                                     <div class="pic-inner">
                                         <p>
-                                        <h3>片名:<a href="#">${videoList.videoTitle}</a></h3></p>
+                                        <h3>片名:
+                                        <a href="/page/videoPlay?id=${videoList.videoId}">${videoList.videoTitle}</a>
+
                                         <p><label>简介:<span>${videoList.videoInfo}</span></label></p>
                                         <label>作者:<span>${videoList.userName}</span></label>
 
