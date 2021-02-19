@@ -83,12 +83,13 @@
                 <div style="font-size: 18px;" th:text="${session.curVideo.user.userName}"></div>
 
                 <!-- 用于标记当前用户观看视频上传者的ID -->
-                <input type="hidden" id="focusedid" th:value="${session.curVideo.user.userId}">
+                <input type="hidden" id="focusedid" th:value="${tbUserAndVideo.userId}">
 
                 <!-- 访问用户的id -->
                 <div style="display: flex;flex-direction:row;width:auto;">
                     <div style="margin-top: 8px;" th:text="${session.curVideo.user.fanNum}"></div>
-                    <div style="width:100px; margin-left: 8px;margin-top: 8px;">粉丝数</div>
+                    <div style="width:100px; margin-left: 8px;margin-top: 8px;">粉丝数
+                    </div>
                 </div>
             </div>
         </div>
@@ -121,6 +122,7 @@
                 <video autoplay="autoplay" class="fp-play" style="height: 100%">
                     <source type="video/mp4" src="${tbUserAndVideo.videoUrl}" style="height: 100%">
                 </source>
+                </video>
                 <div class="barrage ">
                     <div class="show">
 
@@ -204,7 +206,7 @@
                 </tr>
                 <tr>
                     <td class="col-lg-4">观看</td>
-                    <td class="col-lg-8" th:text="${session.curVideo.viewNum}">0</td>
+                    <td class="col-lg-8">${tbViewcount.num}</td>
                 </tr>
                 </tbody>
             </table>
@@ -294,7 +296,7 @@
         <div style="font-size: 20px; font-weight: bold; margin-top: 35px;">视频推荐</div>
 
         <div class="container-fluid row" style="margin: 0;padding: 0;">
-
+            <%--视频推荐--%>
             <div id="videoList"></div>
         </div>
     </div>
@@ -381,11 +383,13 @@
 
     //发送与接受弹幕
     $(document).ready(function () {
-        var videoId = $('#videoId').val();
+        console.log("111");
+        var videoId = ${tbUserAndVideo.videoId};
+        console.log(videoId);
         if (typeof (WebSocket) == "undefined") {
             console.log("您的浏览器不支持WebSocket");
         } else {
-            index = new WebSocket("ws://localhost:80/BarrageWebSocket?videoId=" + videoId);
+            index = new WebSocket("ws://localhost:8088/BarrageWebSocket?videoId=" + videoId);
             //打开事件
             index.onopen = function () {
                 console.log("Socket 已打开");
@@ -420,6 +424,7 @@
             };
             $(".barrage-send").click(function () {
                 var text = $(".barrage-txt").val();
+                console.log("发送弹幕,txt="+text);
                 $.ajax({
                     url: "/BarrageController/sendGroupMessage/" + videoId,
                     async: false,
@@ -489,7 +494,8 @@
     //视频点赞
     $('.dianzan').click(
         function () {
-            var videoId = $('#videoId').val();
+            console.log("点赞");
+            var videoId = ${tbUserAndVideo.videoId};
             $.ajax({
                 url: "/VideoController/DianZanByAjax",
                 async: false,

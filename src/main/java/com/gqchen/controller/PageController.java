@@ -1,12 +1,10 @@
 package com.gqchen.controller;
 
-import com.gqchen.entity.TbSysuser;
-import com.gqchen.entity.TbUserAndVideo;
-import com.gqchen.entity.TbVideo;
-import com.gqchen.entity.TbVideoapprover;
+import com.gqchen.entity.*;
 import com.gqchen.service.TbSysuserService;
 import com.gqchen.service.TbVideoService;
 import com.gqchen.service.TbVideoapproverService;
+import com.gqchen.service.TbViewcountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +46,9 @@ public class PageController {
 
     @Autowired
     private TbVideoapproverService videoapproverService;
+
+    @Autowired
+    private TbViewcountService viewcountService;
 
     @RequestMapping("/index")
     public String page() {
@@ -195,6 +196,32 @@ public class PageController {
         //获取出唯一
         TbUserAndVideo tbUserAndVideo = tbUserAndVideos.get(0);
         model.addAttribute("tbUserAndVideo",tbUserAndVideo);
+
+        //兜取观看记录人数表,对videoId进行查询是否存在,不存在则创建
+        TbViewcount viewcount = new TbViewcount();
+        viewcount.setVideoid(Integer.valueOf(id));
+        List<TbViewcount> tbViewcounts = viewcountService.queryAll(viewcount);
+        if (tbViewcounts.size()>0) {
+            //返回观看人数
+            TbViewcount tbViewcount = tbViewcounts.get(0);
+            Integer num = tbViewcount.getNum();
+            //观看记录+1
+            tbViewcount.setNum(num+1);
+            //同步到数据库
+            viewcountService.update(tbViewcount);
+            //传递到前台页面
+            model.addAttribute("tbViewcount",tbViewcount);
+        }else {
+            //新增videoId并赋值为0
+            viewcount.setNum(0);
+            viewcountService.insert(viewcount);
+
+            //查询出该实体
+            List<TbViewcount> tbViewcounts1 = viewcountService.queryAll(viewcount);
+            TbViewcount tbViewcount = tbViewcounts1.get(0);
+            //传递到前台页面
+            model.addAttribute("tbViewcount",tbViewcount);
+        }
 
         return "/index/user/videoplay";
     }

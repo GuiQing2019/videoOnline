@@ -60,25 +60,19 @@
                 </c:when>
                 <c:otherwise>
                     <c:forEach var="videoList" items="${tbUserAndVideos}">
-                        <tr>
-                            <td>
                                 <div class="col-md-4 grid-item ">
                                     <div class="picture">
                                         <img src="/images/suoluetu.jpg" alt="">
                                     </div>
                                     <div class="pic-inner">
-                                        <p>
                                         <h3>片名:
                                         <a href="/page/videoPlay?id=${videoList.videoId}">${videoList.videoTitle}</a>
-
+                                        </h3>
                                         <p><label>简介:<span>${videoList.videoInfo}</span></label></p>
                                         <label>作者:<span>${videoList.userName}</span></label>
 
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-
                     </c:forEach>
                 </c:otherwise>
             </c:choose>

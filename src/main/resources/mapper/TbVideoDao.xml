@@ -130,6 +130,9 @@
             <if test="videoId != null">
                 and video_id = #{videoId}
             </if>
+            <if test="videoClassify != null">
+                and video_classify = #{videoClassify}
+            </if>
         </where>
     </select>
 

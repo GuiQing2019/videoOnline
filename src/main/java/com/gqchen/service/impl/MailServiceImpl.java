@@ -1,11 +1,10 @@
 package com.gqchen.service.impl;
 
-import com.gqchen.controller.IndexUserController;
 import com.gqchen.service.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.gqchen.entity.MailProperties;
+import com.gqchen.config.MailProperties;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
