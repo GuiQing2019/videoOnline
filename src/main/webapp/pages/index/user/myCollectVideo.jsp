@@ -72,9 +72,11 @@
 
                 <div id="defaultmenu" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a id="fb" href="/page/myVideo?id=${sessionScope.tbSysuser.userId}">我发布的</a></li>
-                        <li data-toggle="tab"><a id="fd" href="#">我点赞的</a></li>
-                        <li data-toggle="tab"><a id="messageRedirect" href="#">我收藏的</a></li>
+                        <li data-toggle="tab"><a id="fb" href="#">我发布的</a></li>
+                        <li data-toggle="tab"><a id="fd"
+                                                 href="#">我点赞的</a></li>
+                        <li class="active"><a id="messageRedirect"
+                                              href="/page/myLikeVideo?id=${sessionScope.tbSysuser.userId}">我收藏的</a></li>
                     </ul>
                     <!-- end nav navbar-nav -->
 
@@ -130,93 +132,28 @@
                         <div class="card">
 
                             <div class="card-body" style="height: 950px">
-                                <div class="toolbar-btn-action" style="display: inline">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#exampleModal" data-whatever="@mdo">
-                                        上传视频
-                                    </button>
-                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                         aria-labelledby="exampleModalLabel">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close"><span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                    <h4 class="modal-title" id="exampleModalLabel">上传视频</h4>
-                                                </div>
-                                                <form id="videoInsert" enctype="multipart/form-data" method="post">
-                                                    <input type="hidden" name="userId"
-                                                           value="${sessionScope.tbSysuser.userId}">
-                                                    <table style=" margin:50px auto;">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>影视标题：</td>
-                                                            <td><input type="text" class="form-control"
-                                                                       name="videoTitle" required/></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>影视简介：</td>
-                                                            <td><input type="text" class="form-control" name="videoInfo"
-                                                                       required/></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>影视分类：</td>
-                                                            <td>
-                                                                <select class="form-control" name="videoClassify">
-                                                                    <option value="1">电影</option>
-                                                                    <option value="2">新闻</option>
-                                                                    <option value="3">美食</option>
-                                                                    <option value="4">音乐</option>
-                                                                    <option value="5">生活</option>
-                                                                </select>
-                                                            </td>
-                                                        <tr>
-                                                            <td>上传视频：</td>
-                                                            <td>
-                                                                <%-- onchange="uploadVidoe(this)" --%>
-                                                                <span><input id="file"
-                                                                             style="width: 75%; height: 100%;display: block"
-                                                                             type="file" name="file"/></span>
-                                                            </td>
-                                                        </tr>
-                                                        </tr>
-                                                        </tbody>
 
-                                                        <tfoot>
-                                                        <tr>
-                                                            <td><input type="button" class="btn btn-default" value="确定"
-                                                                       onclick="uploadVidoe()"/></td>
-                                                            <td><input type="button" class="btn btn-default" value="取消"
-                                                                       id="btnCancel" data-dismiss="modal"/></td>
-                                                        </tr>
-                                                        </tfoot>
-                                                    </table>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-bordered" style="text-align: center">
                                         <thead>
                                         <tr>
                                             <th>编号</th>
-                                            <th>标题</th>
+                                            <th>主题</th>
                                             <th>简介</th>
                                             <th>状态</th>
+                                            <th>分类</th>
                                             <th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:choose>
-                                            <c:when test="${empty tbVideos}">
+                                            <c:when test="${empty videoList}">
                                                 <tr>
-                                                    <td colspan="3">暂无数据</td>
+                                                    <td colspan="6">暂无数据</td>
                                                 </tr>
                                             </c:when>
                                             <c:otherwise>
-                                                <c:forEach var="tbVideos" items="${tbVideos}">
+                                                <c:forEach var="tbVideos" items="${videoList}">
                                                     <tr>
                                                         <td>${tbVideos.videoId}</td>
                                                         <td>${tbVideos.videoTitle}</td>
@@ -236,12 +173,31 @@
                                                             </c:if>
                                                         </td>
                                                         <td>
+                                                            <c:if test="${tbVideos.videoClassify=='1'}">
+                                                                电影
+                                                            </c:if>
+                                                            <c:if test="${tbVideos.videoClassify=='2'}">
+                                                                新闻
+                                                            </c:if>
+                                                            <c:if test="${tbVideos.videoClassify=='3'}">
+                                                                美食
+                                                            </c:if>
+                                                            <c:if test="${tbVideos.videoClassify=='4'}">
+                                                                音乐
+                                                            </c:if>
+                                                            <c:if test="${tbVideos.videoClassify=='5'}">
+                                                                生活
+                                                            </c:if>
+                                                        </td>
+                                                        <td>
                                                                 <%--播放--%>
-                                                            <button type="button" onclick="x('${tbVideos.videoId}',this)">
+                                                            <button type="button"
+                                                                    onclick="x('${tbVideos.videoId}',this)">
                                                                 播放
                                                             </button>
                                                             &nbsp;&nbsp;
-                                                            <button onclick="y('${tbVideos.videoId}',this)">删除
+                                                            <button onclick="y('${tbVideos.videoId}',this)">
+                                                                移出收藏
                                                             </button>
 
                                                         </td>
@@ -281,58 +237,18 @@
         <script type="text/javascript" src="/js/jquery.form.js"></script>
         <script type="text/javascript">
 
-            /*上传视频*/
-            function uploadVidoe() {
-                console.log(document.getElementById("videoInsert"))
-                var formData = new FormData(document.getElementById("videoInsert"));
-                console.log(formData)
-                /* var fileObj = vidoe.files[0]; // 获取文件对象
-                 console.log(fileObj)*/
-                $.ajax({
-                    url: "/page/uploadVidoe",
-                    contentType: false,//false 传输对象
-                    processData: false,
-                    type: "POST",
-                    data: formData,
-                    success: function (ret) {
-                        if (ret.resCode != undefined) {
 
-                            if (ret.resCode == '1') {
-                                alert("上传成功")
-                                window.location.href = "/page/myVideo?id=${sessionScope.tbSysuser.userId}";
-                            } else if (ret.resCode == '0') {
-                                alert("上传失败")
-                            }
-                        }
-                    }
-                })
-
-                /* var url = "uploadVidoe"; // 接收上传文件的后台地址
-                 var form = new FormData(); // FormData 对象
-                 form.append("file", fileObj); // 文件对象
-                 xhr = new XMLHttpRequest(); // XMLHttpRequest 对象
-                 xhr.open("post", url, true); //post方式，url为服务器请求地址，true 该参数规定请求是否异步处理。
-                 xhr.onload = uploadComplete; //请求完成
-                 xhr.onerror = uploadFailed; //请求失败
-                 xhr.send(form); //开始上传，发送form数据*/
-
-            }
-
-
-            function x(vid,obj){
+            function x(vid, obj) {
                 /*播放*/
-                window.location.href = "/page/videoPlay?id="+vid;
+                window.location.href = "/page/videoPlay?id=" + vid;
             };
-
-
-
 
             /*跳转到我的发布*/
             $('#fb').click(
                 function () {
                     console.log("发布...");
-                    var id=${sessionScope.tbSysuser.userId};
-                    window.location.href = "/page/myCollectVideo?id=${sessionScope.tbSysuser.userId}";
+                    var id =${sessionScope.tbSysuser.userId};
+                    window.location.href = "/page/myVideo?id=${sessionScope.tbSysuser.userId}";
                 }
             );
 
@@ -340,7 +256,7 @@
             $("#fd").click(
                 function () {
                     console.log("点赞>..")
-                    var id=${sessionScope.tbSysuser.userId};
+                    var id =${sessionScope.tbSysuser.userId};
                     window.location.href = "/page/myLikeVideo?id=${sessionScope.tbSysuser.userId}";
                 }
             );
@@ -349,15 +265,17 @@
             $("#messageRedirect").click(
                 function () {
                     console.log("收藏>..")
-                    var id=${sessionScope.tbSysuser.userId};
+                    var id =${sessionScope.tbSysuser.userId};
                     window.location.href = "/page/myCollectVideo?id=${sessionScope.tbSysuser.userId}";
+
                 }
             );
-            delVideo = function (vid, obj) {
-                     //通过ajax进行删除
+
+            function y(vid, obj) {
+                //通过ajax进行删除
                 $.ajax({
                     type: "post",
-                    url: "/manager/videoManager/delVideo",
+                    url: "/CollectionController/delConllectVideo",
                     data: {
                         id: vid
                     },

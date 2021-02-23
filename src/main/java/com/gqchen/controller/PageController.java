@@ -1,13 +1,11 @@
 package com.gqchen.controller;
 
 import com.gqchen.entity.*;
-import com.gqchen.service.TbSysuserService;
-import com.gqchen.service.TbVideoService;
-import com.gqchen.service.TbVideoapproverService;
-import com.gqchen.service.TbViewcountService;
+import com.gqchen.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -21,10 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @program: Online
@@ -49,6 +44,13 @@ public class PageController {
 
     @Autowired
     private TbViewcountService viewcountService;
+
+    @Autowired
+    private TbLikevideoService likevideoService;
+
+
+    @Autowired
+    private TbCollectService collectService;
 
     @RequestMapping("/index")
     public String page() {
@@ -188,30 +190,30 @@ public class PageController {
 
 
     @RequestMapping("/videoPlay")
-    public String videoPlay(String id, Model model) {
+    public String videoPlay(HttpServletRequest request, String id, Model model) {
         LOG.info("----------------------------- 视频播放 ------------------------------");
         //接收影片id,根据影片videoId,查询出上传者,名称,描述,视频类型,视频状态
         TbVideo tbVideo = videoService.queryById(Integer.valueOf(id));
         List<TbUserAndVideo> tbUserAndVideos = videoService.queryAllVideoAndUserName(tbVideo);
         //获取出唯一
         TbUserAndVideo tbUserAndVideo = tbUserAndVideos.get(0);
-        model.addAttribute("tbUserAndVideo",tbUserAndVideo);
+        model.addAttribute("tbUserAndVideo", tbUserAndVideo);
 
         //兜取观看记录人数表,对videoId进行查询是否存在,不存在则创建
         TbViewcount viewcount = new TbViewcount();
         viewcount.setVideoid(Integer.valueOf(id));
         List<TbViewcount> tbViewcounts = viewcountService.queryAll(viewcount);
-        if (tbViewcounts.size()>0) {
+        if (tbViewcounts.size() > 0) {
             //返回观看人数
             TbViewcount tbViewcount = tbViewcounts.get(0);
             Integer num = tbViewcount.getNum();
             //观看记录+1
-            tbViewcount.setNum(num+1);
+            tbViewcount.setNum(num + 1);
             //同步到数据库
             viewcountService.update(tbViewcount);
             //传递到前台页面
-            model.addAttribute("tbViewcount",tbViewcount);
-        }else {
+            model.addAttribute("tbViewcount", tbViewcount);
+        } else {
             //新增videoId并赋值为0
             viewcount.setNum(0);
             viewcountService.insert(viewcount);
@@ -220,10 +222,76 @@ public class PageController {
             List<TbViewcount> tbViewcounts1 = viewcountService.queryAll(viewcount);
             TbViewcount tbViewcount = tbViewcounts1.get(0);
             //传递到前台页面
-            model.addAttribute("tbViewcount",tbViewcount);
+            model.addAttribute("tbViewcount", tbViewcount);
+        }
+
+
+        //兜取点赞表数量count
+        int result = likevideoService.startNum(Integer.valueOf(id));
+        if (result > 0) {
+            model.addAttribute("startNum", result);
+        } else {
+            model.addAttribute("startNum", 0);
+        }
+
+        //返回评分数据
+        TbSysuser tbSysuser = (TbSysuser) request.getSession().getAttribute("tbSysuser");
+        TbLikevideo tbLikevideo = new TbLikevideo();
+        tbLikevideo.setVideoId(Integer.valueOf(id));
+        tbLikevideo.setUserId(Integer.valueOf(tbSysuser.getUserId()));
+        List<TbLikevideo> tbLikevideos = likevideoService.queryAll(tbLikevideo);
+        if (tbLikevideos.size() > 0) {
+            //如果已评分过则传递评分数据
+            TbLikevideo tbLikevideo1 = tbLikevideos.get(0);
+            model.addAttribute("tbLikevideo", tbLikevideo1);
+        } else {
+            //为空则传递一个空的数据
+            model.addAttribute("tbLikevideo", null);
         }
 
         return "/index/user/videoplay";
     }
 
+
+    @RequestMapping("/myLikeVideo")
+    public String myLikeVideo(String id, Model model) {
+        LOG.info("------------------------------ 我点赞的 ------------------------------");
+        TbLikevideo tbLikevideo = new TbLikevideo();
+        tbLikevideo.setUserId(Integer.valueOf(id));
+        List<TbLikevideo> tbLikevideos = likevideoService.queryAll(tbLikevideo);
+        ArrayList<TbVideo> videoList = new ArrayList<>();
+        //遍历TbLikevideos,将videoId通过video表兜取所有数据,并赋值进videoList
+        for (TbLikevideo likevideo : tbLikevideos) {
+            Integer videoId = likevideo.getVideoId();
+            TbVideo tbVideo = videoService.queryById(videoId);
+            videoList.add(tbVideo);
+        }
+        //回传videoList
+        model.addAttribute("videoList", videoList);
+        return "/index/user/myLikeVideo";
+    }
+
+    @RequestMapping("/myCollectVideo")
+    public String myCollectVideo(String id, Model model) {
+        LOG.info("------------------------------ 我收藏的 ------------------------------");
+        TbCollect tbCollect = new TbCollect();
+        tbCollect.setUserId(Integer.valueOf(id));
+        List<TbCollect> tbCollects = collectService.queryAll(tbCollect);
+        ArrayList<TbVideo> videoList = new ArrayList<>();
+        //遍历TbLikevideos,将videoId通过video表兜取所有数据,并赋值进videoList
+        for (TbCollect collect : tbCollects) {
+            Integer videoId = collect.getVideoId();
+            TbVideo tbVideo = videoService.queryById(videoId);
+            videoList.add(tbVideo);
+        }
+        //回传videoList
+        model.addAttribute("videoList", videoList);
+        return "/index/user/myCollectVideo";
+    }
+
+    @RequestMapping("/myMessage")
+    public String myMessage(){
+        LOG.info("------------------------------ 消息中心 ------------------------------");
+        return "/index/user/myMessage";
+    }
 }

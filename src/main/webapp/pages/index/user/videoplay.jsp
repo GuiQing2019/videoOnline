@@ -101,7 +101,7 @@
             </button>
             <button type="button" class="col-sm-4 btn btn-default btn-sm mybtn" title="私信" data-toggle="modal"
                     data-target="#privatemsg">
-                <span class="glyphicon glyphicon-comment"></span> 私信
+                <span class="focusClass glyphicon glyphicon-plus"></span> 私信
             </button>
 
 
@@ -198,11 +198,18 @@
                 </tr>
                 <tr>
                     <td class="col-lg-4">即时评分</td>
-                    <td class="col-lg-8" id="starNum" th:text="${session.curVideo.ppNum}">0</td>
+                    <td class="col-lg-8" id="starNum" th:text="${tbLikevideo.likeGrade}">
+                        <c:if test="${empty tbLikevideo}">
+                            0
+                        </c:if>
+                        <c:if test="${not empty tbLikevideo}">
+                            ${tbLikevideo.likeGrade}
+                        </c:if>
+                    </td>
                 </tr>
                 <tr>
                     <td class="col-lg-4">点赞</td>
-                    <td class="col-lg-8" id="ppNum" th:text="${session.curVideo.ppNum}">0</td>
+                    <td class="col-lg-8" id="ppNum" th:text="${startNum}">${startNum}</td>
                 </tr>
                 <tr>
                     <td class="col-lg-4">观看</td>
@@ -242,8 +249,8 @@
 
 										$(document).ready(
 											function(){
-												var videoId = $("#videoId").val();
-												var userId = $("#userId").val();
+												var videoId = ${tbUserAndVideo.videoId};
+												var userId = ${tbUserAndVideo.userId};
 												$("#userIdTwo").attr("value",userId);
 												$("#videoIdTwo").attr("value",videoId);
 											}
@@ -269,7 +276,7 @@
 												  		if(result.message=="点评成功"){
 												  			window.wxc.xcConfirm(result.message, window.wxc.xcConfirm.typeEnum.success);
 												  		}else{
-												  			window.wxc.xcConfirm(result.message, window.wxc.xcConfirm.typeEnum.warning);
+												  			window.wxc.xcConfirm(result.message, window.wxc.xcConfirm.typeEnum.error);
 												  		}
 													}//success:function
 												});//ajax
@@ -297,7 +304,33 @@
 
         <div class="container-fluid row" style="margin: 0;padding: 0;">
             <%--视频推荐--%>
-            <div id="videoList"></div>
+            <div id="videoList">
+                <%--
+                 <c:choose>
+                <c:when test="${empty tbUserAndVideos}">
+                    <tr>
+                        <td colspan="5">暂无数据</td>
+                    </tr>
+                </c:when>
+                <c:otherwise>
+                    <c:forEach var="videoList" items="${tbUserAndVideos}">
+                                <div class="col-md-4 grid-item ">
+                                    <div class="picture">
+                                        <img src="/images/suoluetu.jpg" alt="">
+                                    </div>
+                                    <div class="pic-inner">
+                                        <h3>片名:
+                                        <a href="/page/videoPlay?id=${videoList.videoId}">${videoList.videoTitle}</a>
+                                        </h3>
+                                        <p><label>简介:<span>${videoList.videoInfo}</span></label></p>
+                                        <label>作者:<span>${videoList.userName}</span></label>
+
+                                    </div>
+                                </div>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>--%>
+            </div>
         </div>
     </div>
 </div>
@@ -346,7 +379,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="sendMsg">提交更改</button>
+                <button type="button" class="btn btn-primary" id="sendMsg">提交</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -506,7 +539,7 @@
                 },
                 success: function (data) {
                     if (data.message != "点赞成功") {
-                        window.wxc.xcConfirm(data.message, window.wxc.xcConfirm.typeEnum.warning);
+                        window.wxc.xcConfirm(data.message, window.wxc.xcConfirm.typeEnum.error);
                     } else {
                         var ppNum = $('#ppNum').html();
                         var ppNum2 = parseInt(ppNum) + 1;
@@ -522,7 +555,8 @@
     //判断用户是否已关注
     $(document).ready(
         function () {
-            var focusedId = $('#focusedid').val();
+            var focusedId = ${tbUserAndVideo.userId};
+            console.log("focused:"+focusedId);
             $.ajax({
                 url: "/FocusController/FocusVerifyByAjax",
                 async: false,
@@ -572,7 +606,7 @@
     //判断视频是否已经收藏
     $(document).ready(
         function () {
-            var videoId = $('#videoId').val();
+            var videoId = ${tbUserAndVideo.videoId};
             $.ajax({
                 url: "/CollectionController/vertifyIfCollectionByAjax",
                 async: false,
@@ -591,6 +625,7 @@
                         //未收藏就添加收藏事件
                         $('#c_button').click(
                             function () {
+                                console.log("videoId:"+videoId);
                                 //var videoId = $('#videoId').val();
                                 $.ajax({
                                     url: "/CollectionController/addCollectionByAjax",
@@ -608,7 +643,7 @@
                                             $('.c_value').html("已收藏");
                                             //alert("收藏成功");
                                         } else {
-                                            window.wxc.xcConfirm(data.message, window.wxc.xcConfirm.typeEnum.warning);
+                                            window.wxc.xcConfirm(data.message, window.wxc.xcConfirm.typeEnum.error);
                                         }
                                     }
                                 })
