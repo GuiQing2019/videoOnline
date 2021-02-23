@@ -241,7 +241,7 @@
                                                                 播放
                                                             </button>
                                                             &nbsp;&nbsp;
-                                                            <button onclick="y('${tbVideos.videoId}',this)">删除
+                                                            <button onclick="delVideo('${tbVideos.videoId}',this)">删除
                                                             </button>
 
                                                         </td>

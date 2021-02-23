@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gqchen.dao.TbVideoapproverDao">
+
+    <resultMap id="BaseResultMap" type="com.gqchen.entity.TbVideoapprover">
+        <!--@Table tb_videoApprover-->
+        <result property="videoapproverId" column="videoApprover_id" jdbcType="INTEGER"/>
+        <result property="videoName" column="video_name" jdbcType="VARCHAR"/>
+        <result property="videoDesc" column="video_desc" jdbcType="VARCHAR"/>
+        <result property="videoUrl" column="video_url" jdbcType="VARCHAR"/>
+        <result property="statuId" column="statu_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="classifyId" column="classify_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          videoApprover_id, video_name, video_desc, video_url, statu_id, user_id, classify_id
+        from videoweb.tb_videoApprover
+        where videoApprover_id = #{videoapproverId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          videoApprover_id, video_name, video_desc, video_url, statu_id, user_id, classify_id
+        from videoweb.tb_videoApprover
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          videoApprover_id, video_name, video_desc, video_url, statu_id, user_id, classify_id
+        from videoweb.tb_videoApprover
+        <where>
+            <if test="videoapproverId != null">
+                and videoApprover_id = #{videoapproverId}
+            </if>
+            <if test="videoName != null and videoName != ''">
+                and video_name = #{videoName}
+            </if>
+            <if test="videoDesc != null and videoDesc != ''">
+                and video_desc = #{videoDesc}
+            </if>
+            <if test="videoUrl != null and videoUrl != ''">
+                and video_url = #{videoUrl}
+            </if>
+            <if test="statuId != null">
+                and statu_id = #{statuId}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="classifyId != null">
+                and classify_id = #{classifyId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="videoapproverId" useGeneratedKeys="true">
+        insert into videoweb.tb_videoApprover(video_name, video_desc, video_url, statu_id, user_id, classify_id)
+        values (#{videoName}, #{videoDesc}, #{videoUrl}, #{statuId}, #{userId}, #{classifyId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update videoweb.tb_videoApprover
+        <set>
+            <if test="videoName != null and videoName != ''">
+                video_name = #{videoName},
+            </if>
+            <if test="videoDesc != null and videoDesc != ''">
+                video_desc = #{videoDesc},
+            </if>
+            <if test="videoUrl != null and videoUrl != ''">
+                video_url = #{videoUrl},
+            </if>
+            <if test="statuId != null">
+                statu_id = #{statuId},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="classifyId != null">
+                classify_id = #{classifyId},
+            </if>
+        </set>
+        where videoApprover_id = #{videoapproverId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from videoweb.tb_videoApprover where videoApprover_id = #{videoapproverId}
+    </delete>
+
+</mapper>

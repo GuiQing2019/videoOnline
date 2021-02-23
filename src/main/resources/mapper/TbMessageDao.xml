@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gqchen.dao.TbMessageDao">
+
+    <resultMap id="BaseResultMap" type="com.gqchen.entity.TbMessage">
+        <!--@Table tb_message-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="context" column="context" jdbcType="VARCHAR"/>
+        <result property="senId" column="sen_id" jdbcType="INTEGER"/>
+        <result property="revId" column="rev_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, title, context, sen_id, rev_id
+        from videoweb.tb_message
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, title, context, sen_id, rev_id
+        from videoweb.tb_message
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, title, context, sen_id, rev_id
+        from videoweb.tb_message
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="context != null and context != ''">
+                and context = #{context}
+            </if>
+            <if test="senId != null">
+                and sen_id = #{senId}
+            </if>
+            <if test="revId != null">
+                and rev_id = #{revId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into videoweb.tb_message(title, context, sen_id, rev_id)
+        values (#{title}, #{context}, #{senId}, #{revId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update videoweb.tb_message
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="context != null and context != ''">
+                context = #{context},
+            </if>
+            <if test="senId != null">
+                sen_id = #{senId},
+            </if>
+            <if test="revId != null">
+                rev_id = #{revId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from videoweb.tb_message where id = #{id}
+    </delete>
+
+</mapper>

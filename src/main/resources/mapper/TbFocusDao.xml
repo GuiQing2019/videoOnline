@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gqchen.dao.TbFocusDao">
+
+    <resultMap id="BaseResultMap" type="com.gqchen.entity.TbFocus">
+        <!--@Table tb_focus-->
+        <result property="focusId" column="focus_id" jdbcType="INTEGER"/>
+        <result property="focusedId" column="focused_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="selectFocuseds" resultType="com.gqchen.entity.TbSysuser"
+            parameterType="int">
+        select * from tb_user as a
+        where a.user_id in(
+            SELECT b.focused_id from tb_focus as b where b.user_id = #{userId})
+    </select>
+
+
+    <select id="selectFocusedsId" resultType="Integer"
+            parameterType="int">
+        select user_id from tb_user as a
+        where a.user_id in(
+            SELECT b.focused_id from tb_focus as b where b.user_id = #{userId})
+    </select>
+
+    <select id="selectFocuses" resultType="com.gqchen.entity.TbSysuser"
+            parameterType="int">
+        select * from tb_user as a
+        where a.user_id in(
+            SELECT b.user_id from tb_focus as b where b.focused_id = #{userId})
+    </select>
+
+    <select id="selectOneVerify" parameterType="com.gqchen.entity.TbFocus" resultType="int">
+        select count(*) from tb_focus where user_id = #{userId} and focused_id = #{focusedId};
+    </select>
+
+    <insert id="insertOne" parameterType="com.gqchen.entity.TbFocus"
+            useGeneratedKeys="true" keyProperty="focusId">
+        insert into tb_focus(
+            user_id,
+            focused_id
+        )
+        values(
+                  #{userId},
+                  #{focusedId}
+              )
+    </insert>
+
+    <delete id="deleteOne" parameterType="com.gqchen.entity.TbFocus">
+        delete from
+            tb_focus
+        where focus_id =#{focusId}
+    </delete>
+
+</mapper>
